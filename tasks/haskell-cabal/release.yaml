@@ -73,6 +73,8 @@ spec:
             echo "Running cabal update to ensure you're on latest dependencies.."
             echo "Building..."
             cabal build all 2>&1 | tee /tmp/build.log
+            cp -p "$(./scripts/bin-path.sh cardano-node)" ~/.local/bin/
+            cp -p "$(./scripts/bin-path.sh cardano-cli)" ~/.local/bin/
         - image: ghcr.io/jenkins-x/jx-registry:0.1.1
           name: check-registry
           resources: {}
