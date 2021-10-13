@@ -58,7 +58,8 @@ spec:
             #!/usr/bin/env bash
             set +x
             source .jx/variables.sh
-
+            export LD_LIBRARY_PATH=/usr/local/lib:"${LD_LIBRARY_PATH}" && PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:"${PKG_CONFIG_PATH}"
+            
             # executes cabal build all
             # parses executables created from compiler output and copies it to ~./cabal/bin folder.
             cabal install $CABAL_PACKAGES --overwrite-policy=always 2>&1 | tee /tmp/build-install.log
