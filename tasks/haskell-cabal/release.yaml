@@ -117,7 +117,17 @@ spec:
           secret:
             optional: true
             secretName: jenkins-release-gpg
-  podTemplate: {}
+        workspaces:
+          - name: source
+            description: |
+              Default Workspace
+            optional: false
+            mountPath: /workspace/source
+          - name: root
+            description: |
+              Cabal root
+            optional: false
+            mountPath: /root/.cabal       
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
 status: {}
