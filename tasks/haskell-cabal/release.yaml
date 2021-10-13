@@ -62,10 +62,10 @@ spec:
             
             # executes cabal build all
             # parses executables created from compiler output and copies it to ~./cabal/bin folder.
+            cabal update 2>&1 | tee /tmp/cabal-build.log
             cabal install $CABAL_PACKAGES --overwrite-policy=always 2>&1 | tee /tmp/build-install.log
 
             echo "Running cabal update to ensure you're on latest dependencies.."
-            cabal update 2>&1 | tee /tmp/cabal-build.log
             echo "Building..."
             cabal build all 2>&1 | tee /tmp/build.log
         - image: ghcr.io/jenkins-x/jx-registry:0.1.1
