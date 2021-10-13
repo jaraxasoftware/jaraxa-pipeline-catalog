@@ -58,6 +58,11 @@ spec:
             #!/usr/bin/env bash
             set +x
             source .jx/variables.sh
+
+            git clone https://github.com/input-output-hk/libsodium && cd libsodium && git checkout 66f017f1
+            ./autogen.sh
+            ./configure && make
+            make install
             export LD_LIBRARY_PATH=/usr/local/lib:"${LD_LIBRARY_PATH}" && PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:"${PKG_CONFIG_PATH}"
             
             # executes cabal build all
