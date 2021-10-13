@@ -13,7 +13,7 @@ spec:
         stepTemplate:
           env:
           - name: HOME
-            value: /tekton/home
+            value: /root/.cabal
           envFrom:
           - secretRef:
               name: jx-boot-job-env-vars
