@@ -65,7 +65,7 @@ spec:
 
             echo "Running cabal update to ensure you're on latest dependencies.."
             cabal update 2>&1 | tee /tmp/cabal-build.log
-            echo "Building.."
+            echo "Building..."
             cabal build all 2>&1 | tee /tmp/build.log
         - image: ghcr.io/jenkins-x/jx-registry:0.1.1
           name: check-registry
