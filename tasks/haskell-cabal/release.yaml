@@ -58,7 +58,7 @@ spec:
             #!/usr/bin/env bash
             set +x
             source .jx/variables.sh
-            source scripts/prereqs.sh     
+            ./scripts/prereqs.sh     
         - image: haskell:8.10
           name: build-cabal-all
           onError: stopAndFail
@@ -67,7 +67,7 @@ spec:
             #!/usr/bin/env bash
             set +x
             source .jx/variables.sh
-            source scripts/cabal-build-all.sh
+            ./scripts/cabal-build-all.sh
         - image: ghcr.io/jenkins-x/jx-registry:0.1.1
           name: check-registry
           resources: {}
