@@ -51,14 +51,14 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx gitops variables
-        - image: haskell:8.10
+        - image: debian
           name: setup-cabal-prereqs
           resources: {}
           script: |
             #!/usr/bin/env bash
             source .jx/variables.sh
             ./scripts/prereqs.sh     
-        - image: haskell:8.10
+        - image: debian
           name: build-cabal-all
           onError: stopAndFail
           resources: {}
