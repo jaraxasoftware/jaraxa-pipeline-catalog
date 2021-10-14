@@ -52,18 +52,12 @@ spec:
             #!/usr/bin/env sh
             jx gitops variables
         - image: debian
-          name: setup-cabal-prereqs
+          name: build-cabal-all
           resources: {}
           script: |
             #!/usr/bin/env bash
             source .jx/variables.sh
-            ./scripts/prereqs.sh     
-        - name: build-cabal-all
-          onError: stopAndFail
-          resources: {}
-          script: |
-            #!/usr/bin/env bash
-            source .jx/variables.sh
+            ./scripts/prereqs.sh
             ./scripts/cabal-build-all.sh
         - image: ghcr.io/jenkins-x/jx-registry:0.1.1
           name: check-registry
