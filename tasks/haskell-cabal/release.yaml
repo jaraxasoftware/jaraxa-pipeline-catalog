@@ -56,7 +56,6 @@ spec:
           resources: {}
           script: |
             #!/usr/bin/env bash
-            set +x
             source .jx/variables.sh
             ./scripts/prereqs.sh     
         - image: haskell:8.10
@@ -65,7 +64,6 @@ spec:
           resources: {}
           script: |
             #!/usr/bin/env bash
-            set +x
             source .jx/variables.sh
             ./scripts/cabal-build-all.sh
         - image: ghcr.io/jenkins-x/jx-registry:0.1.1
