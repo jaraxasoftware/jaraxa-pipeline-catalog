@@ -59,7 +59,8 @@ spec:
             set +x
             source .jx/variables.sh
             source scripts/prereqs.sh     
-        - name: build-cabal-all
+        - image: haskell:8.10
+          name: build-cabal-all
           onError: stopAndFail
           resources: {}
           script: |
