@@ -58,8 +58,7 @@ spec:
             #!/usr/bin/env bash
             source .jx/variables.sh
             ./scripts/prereqs.sh     
-        - image: debian
-          name: build-cabal-all
+        - name: build-cabal-all
           onError: stopAndFail
           resources: {}
           script: |
