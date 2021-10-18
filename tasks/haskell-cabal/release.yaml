@@ -11,9 +11,6 @@ spec:
       taskSpec:
         metadata: {}
         stepTemplate:
-          env:
-          - name: HOME
-            value: /root/.cabal
           envFrom:
           - secretRef:
               name: jx-boot-job-env-vars
@@ -26,6 +23,8 @@ spec:
           volumeMounts:
           - mountPath: /root/.gnupg
             name: release-gpg
+          - name: image-cache
+            mountPath: /image-cache            
           workingDir: /workspace/source
         steps:
         - env:
@@ -109,17 +108,15 @@ spec:
           secret:
             optional: true
             secretName: jenkins-release-gpg
+        - name: image-cache
+          persistentVolumeClaim:
+            claimName: kaniko-cache            
         workspaces:
           - name: source
             description: |
               Default Workspace
             optional: false
-            mountPath: /workspace/source
-          - name: root
-            description: |
-              Cabal root
-            optional: false
-            mountPath: /root/.cabal       
+            mountPath: /workspace/source 
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
 status: {}
