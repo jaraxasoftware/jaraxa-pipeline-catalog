@@ -51,7 +51,7 @@ spec:
           script: |
             #!/usr/bin/env bash
             source .jx/variables.sh
-            hadolint Dockerfile
+            hadolint --no-fail Dockerfile
         - image: ghcr.io/jenkins-x/jx-boot:3.2.203
           name: build-helm-build
           resources: {}
