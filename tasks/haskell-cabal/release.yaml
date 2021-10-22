@@ -103,7 +103,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
-            jx promote -b --all --timeout 1h --no-poll
+            jx promote -b --all --timeout 1h --version $VERSION-$BUILD_ID --no-poll
         volumes:
         - name: release-gpg
           secret:
