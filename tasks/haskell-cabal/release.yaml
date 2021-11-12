@@ -32,12 +32,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: password
-                name: tekton-git
-          - name: GITHUB_TOKEN
-            valueFrom:
-              secretKeyRef:
-                key: password
-                name: tekton-git                
+                name: tekton-git          
           - name: GIT_USER
             valueFrom:
               secretKeyRef:
@@ -101,6 +96,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
+            export GITHUB_TOKEN=$GIT_TOKEN
 
             go get github.com/github-release/github-release
             github-release upload \
