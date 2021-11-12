@@ -90,6 +90,20 @@ spec:
             git commit -a -m "chore: release $VERSION" --allow-empty
             git tag -fa v$VERSION -m "Release version $VERSION"
             git push --force origin v$VERSION
+        - image: golang:1.15
+          name: upload-artifacts-release
+          resources: {}
+          script: |
+            #!/usr/bin/env sh
+            source .jx/variables.sh
+
+            go get github.com/github-release/github-release
+            github-release upload \
+              --user $REPO_OWNER \
+              --repo $REPO_NAME \
+              --tag v${VERSION} \
+              --name "$REPO_NAME-linux-amd64" \
+              --file $ARTIFACT
         - image: ghcr.io/jenkins-x/jx-boot:3.2.203
           name: promote-helm-release
           resources: {}
