@@ -11,6 +11,9 @@ spec:
       taskSpec:
         metadata: {}
         stepTemplate:
+          env:
+          - name: HOME
+            value: /tekton/home        
           envFrom:
           - secretRef:
               name: jx-boot-job-env-vars
@@ -18,8 +21,8 @@ spec:
           name: ""
           resources:
             requests:
-              cpu: 400m
-              memory: 512Mi
+              cpu: 800m
+              memory: 1000Mi
           volumeMounts:
           - mountPath: /root/.gnupg
             name: release-gpg
