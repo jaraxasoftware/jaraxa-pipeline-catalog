@@ -31,6 +31,11 @@ spec:
           workingDir: /workspace/source
         steps:
         - env:
+          - name: GITHUB_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: oauth
+                name: lighthouse-oauth-token
           - name: GIT_TOKEN
             valueFrom:
               secretKeyRef:
@@ -103,8 +108,7 @@ spec:
           name: upload-artifacts-release
           resources: {}
           script: |
-            #!/usr/bin/env sh
-            export GITHUB_TOKEN=${GIT_TOKEN}
+            #!/usr/bin/env sh      
 
             go get github.com/github-release/github-release
             github-release upload \
@@ -112,7 +116,7 @@ spec:
               --repo $REPO_NAME \
               --tag v${VERSION} \
               --name "$REPO_NAME-linux-amd64" \
-              --file $ARTIFACT
+              --file $ARTIFACT-${VERSION}
         - image: ghcr.io/jenkins-x/jx-boot:3.2.203
           name: promote-helm-release
           resources: {}
