@@ -59,7 +59,7 @@ spec:
           script: |
             #!/bin/bash
             source .jx/variables.sh
-            rebar3 release --relvsn $REBAR_RELEASE --relname $APP_NAME --output-dir ./
+            rebar3 release --relvsn $VERSION --relname $APP_NAME --output-dir ./
         - image: erlang:21.3.8.11
           name: build-erlang-release
           resources: {}
