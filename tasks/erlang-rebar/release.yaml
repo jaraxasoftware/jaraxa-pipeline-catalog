@@ -108,7 +108,8 @@ spec:
           name: upload-artifacts-release
           resources: {}
           script: |
-            #!/usr/bin/env sh      
+            #!/usr/bin/env sh
+            source .jx/variables.sh
 
             go get github.com/github-release/github-release
             github-release upload \
