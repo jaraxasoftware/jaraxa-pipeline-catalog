@@ -98,8 +98,7 @@ spec:
           resources: {}
           script: |
             #!/usr/bin/env sh
-            source .jx/variables.sh
-            export GITHUB_TOKEN=(`cat /tekton/creds-secrets/tekton-git/password`)
+            export GITHUB_TOKEN=${GIT_TOKEN}
 
             go get github.com/github-release/github-release
             github-release upload \
