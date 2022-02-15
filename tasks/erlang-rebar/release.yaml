@@ -31,11 +31,6 @@ spec:
           workingDir: /workspace/source
         steps:
         - env:
-          - name: GITHUB_TOKEN
-            valueFrom:
-              secretKeyRef:
-                key: oauth
-                name: lighthouse-oauth-token
           - name: GIT_TOKEN
             valueFrom:
               secretKeyRef:
@@ -104,7 +99,13 @@ spec:
             git commit -a -m "chore: release $VERSION" --allow-empty
             git tag -fa v$VERSION -m "Release version $VERSION"
             git push --force origin v$VERSION
-        - image: golang:1.15
+        - env:
+          - name: GITHUB_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: oauth
+                name: lighthouse-oauth-token          
+          image: golang:1.15
           name: upload-artifacts-release
           resources: {}
           script: |
