@@ -110,6 +110,7 @@ spec:
           script: |
             #!/usr/bin/env bash
             source .jx/variables.sh
+            export GITHUB_TOKEN=$GITHUB_TOKEN
 
             go get github.com/github-release/github-release
             github-release upload \
