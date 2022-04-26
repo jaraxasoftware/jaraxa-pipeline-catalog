@@ -67,6 +67,7 @@ spec:
           script: |
             #!/bin/bash
             source .jx/variables.sh
+            git config --global url."https://".insteadOf git://            
             rebar3 as $REBAR_RELEASE release --output-dir ./
         - image: ghcr.io/jenkins-x/jx-registry:0.1.1
           name: check-registry
