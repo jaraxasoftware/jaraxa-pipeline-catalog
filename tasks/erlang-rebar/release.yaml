@@ -142,7 +142,7 @@ spec:
             secretName: jenkins-release-gpg
         - name: image-cache
           persistentVolumeClaim:
-            claimName: kaniko-cache            
+            claimName: kaniko-docker-cache            
         workspaces:
           - name: source
             description: |
