@@ -45,6 +45,7 @@ spec:
     resources: {}
     script: |
       #!/usr/bin/env sh
+      set +x
       counter=0
       until [ "$counter" -eq 3 ]; do
         # lets avoid git rebase/merge conflicts on promotions
@@ -55,6 +56,7 @@ spec:
           git reset --hard HEAD~1
         fi
       done
+      sleep 30
       exit 1
     workingDir: /workspace/source
   workspaces:
