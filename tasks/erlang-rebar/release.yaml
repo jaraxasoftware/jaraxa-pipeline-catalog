@@ -113,6 +113,7 @@ spec:
           script: |
             #!/usr/bin/env bash
             source .jx/variables.sh
+            set +x            
             
             go get github.com/github-release/github-release
             github-release upload \
