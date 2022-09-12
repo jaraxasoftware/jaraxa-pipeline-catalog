@@ -78,6 +78,7 @@ spec:
             sonar-scanner \
               -Dsonar.projectKey=$SONAR_PROJECT_KEY \
               -Dsonar.exclusions=$SONAR_EXCLUSIONS \
+              -Dsonar.sourceEncoding=ISO-8859-1 \
               -Dsonar.sources=. \
               -Dsonar.host.url=$SONAR_URL
         - image: ghcr.io/jenkins-x/jx-registry:0.1.1
