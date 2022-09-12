@@ -75,6 +75,7 @@ spec:
           script: |
             #!/bin/bash
             source .jx/variables.sh
+            export SONAR_TOKEN=$SONAR_TOKEN
             sonar-scanner \
               -Dsonar.projectKey=$SONAR_PROJECT_KEY \
               -Dsonar.exclusions=$SONAR_EXCLUSIONS \
