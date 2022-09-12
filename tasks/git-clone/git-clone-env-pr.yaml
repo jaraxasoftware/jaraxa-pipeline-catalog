@@ -56,7 +56,6 @@ spec:
           git reset --hard HEAD~1
         fi
       done
-      sleep 30
       exit 1
     workingDir: /workspace/source
   workspaces:

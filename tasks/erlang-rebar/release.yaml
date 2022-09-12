@@ -69,6 +69,17 @@ spec:
             source .jx/variables.sh
             git config --global url."https://".insteadOf git://            
             rebar3 as $REBAR_RELEASE release --output-dir ./
+        - image: ghcr.io/jaraxasoftware/netcomp-sonar:4.7.0.2747
+          name: sonar-code-analisys
+          resources: {}
+          script: |
+            #!/bin/bash
+            source .jx/variables.sh
+            sonar-scanner \
+              -Dsonar.projectKey=$SONAR_PROJECT_KEY\
+              -Dsonar.exclusions=**/*.js,**/*.css,**/*.html \
+              -Dsonar.sources=. \
+              -Dsonar.host.url=$SONAR_URL
         - image: ghcr.io/jenkins-x/jx-registry:0.1.1
           name: check-registry
           resources: {}
