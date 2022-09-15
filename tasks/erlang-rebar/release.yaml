@@ -25,9 +25,7 @@ spec:
               memory: 1000Mi
           volumeMounts:
           - mountPath: /root/.gnupg
-            name: release-gpg
-          - name: image-cache
-            mountPath: /image-cache            
+            name: release-gpg         
           workingDir: /workspace/source
         steps:
         - env:
@@ -162,10 +160,7 @@ spec:
         - name: release-gpg
           secret:
             optional: true
-            secretName: jenkins-release-gpg
-        - name: image-cache
-          persistentVolumeClaim:
-            claimName: kaniko-docker-cache            
+            secretName: jenkins-release-gpg      
         workspaces:
           - name: source
             description: |
