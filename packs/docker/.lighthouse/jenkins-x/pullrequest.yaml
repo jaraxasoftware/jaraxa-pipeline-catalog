@@ -11,14 +11,14 @@ spec:
       taskSpec:
         metadata: {}
         stepTemplate:
-          image: uses:jaraxasotfware/jaraxa-pipeline-catalog/tasks/docker/pullrequest.yaml@versionStream
+          image: uses:jaraxasoftware/jaraxa-pipeline-catalog/tasks/docker/pullrequest.yaml@versionStream
           name: ""
           resources:
             # override limits for all containers here
             limits: {}
           workingDir: /workspace/source
         steps:
-        - image: uses:jaraxasotfware/jaraxa-pipeline-catalog/tasks/git-clone/git-clone-pr.yaml@versionStream
+        - image: uses:jaraxasoftware/jaraxa-pipeline-catalog/tasks/git-clone/git-clone-pr.yaml@versionStream
           name: ""
           resources: {}
         - name: jx-variables
