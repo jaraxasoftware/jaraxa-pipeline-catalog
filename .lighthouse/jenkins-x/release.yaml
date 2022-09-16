@@ -11,14 +11,14 @@ spec:
       taskSpec:
         metadata: {}
         stepTemplate:
-          image: uses:jenkins-x/jx3-pipeline-catalog/tasks/go/release.yaml@versionStream
+          image: uses:jaraxasoftware/jx3-pipeline-catalog/tasks/go/release.yaml@versionStream
           name: ""
           resources:
             # override limits for all containers here
             limits: {}
           workingDir: /workspace/source
         steps:
-        - image: uses:jenkins-x/jx3-pipeline-catalog/tasks/git-clone/git-clone.yaml@versionStream
+        - image: uses:jaraxasoftware/jaraxa-pipeline-catalog/tasks/git-clone/git-clone.yaml@versionStream
           name: ""
           resources: {}
         - name: next-version
@@ -38,9 +38,9 @@ spec:
             #!/usr/bin/env sh
             source .jx/variables.sh
 
-            git clone https://github.com/jenkins-x/$REPO_NAME new-main
+            git clone https://github.com/jaraxasoftware/$REPO_NAME new-main
             cd new-main
-            sed -i -e "s|uses:jenkins-x/jx3-pipeline-catalog/tasks/go/release.yaml@versionStream.*|uses:jenkins-x/jx3-pipeline-catalog/tasks/go/release.yaml@$PULL_BASE_SHA|" environment/.lighthouse/jenkins-x/pullrequest.yaml
+            sed -i -e "s|uses:jaraxasoftware/jaraxa-pipeline-catalog/tasks/go/release.yaml@versionStream.*|uses:jaraxasoftware/jaraxa-pipeline-catalog/tasks/go/release.yaml@$PULL_BASE_SHA|" environment/.lighthouse/jenkins-x/pullrequest.yaml
 
             git add * || true
             git commit -a -m "chore: upgrade environment pull request to $PULL_BASE_SHA" --allow-empty
