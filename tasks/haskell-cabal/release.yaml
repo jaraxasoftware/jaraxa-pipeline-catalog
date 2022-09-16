@@ -114,7 +114,7 @@ spec:
             #!/usr/bin/env sh
             source .jx/variables.sh
             jx gitops helm release --version $VERSION-$BUILD_ID
-        - image: ghcr.io/jenkins-x-plugins/jx-promote:0.2.10
+        - image: ghcr.io/jenkins-x-plugins/jx-promote:0.1.0
           resources: {}
           script: |
             #!/usr/bin/env sh
