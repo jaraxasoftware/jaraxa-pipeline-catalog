@@ -1,4 +1,4 @@
-# jx3-pipeline-catalog
+# jaraxa-pipeline-catalog
 
 The default pipeline catalog for Jenkins X 3.x
 
@@ -18,7 +18,7 @@ For more information check out the [Jenkins X 3.x support for Tekton Catalog](ht
 ## Custom Pipeline Catalogs
 ([Blog article](https://jenkins-x.io/blog/2020/11/11/accelerate-tekton/#custom-pipeline-catalogs))
 
-To use your own custom pipeline catalog, you can [fork this catalog](https://github.com/jenkins-x/jx3-pipeline-catalog/fork) to make changes for your team or share between teams in your company. You can make as many catalogs as you like and put whichever catalogs you want in the extensions/pipeline-catalog.yaml file of your cluster git repository of your Jenkins X 3.x install, like for example:
+To use your own custom pipeline catalog, you can [fork this catalog](https://github.com/jaraxasoftware/jaraxa-pipeline-catalog/fork) to make changes for your team or share between teams in your company. You can make as many catalogs as you like and put whichever catalogs you want in the extensions/pipeline-catalog.yaml file of your cluster git repository of your Jenkins X 3.x install, like for example:
 ```
 # Source: <boot-repo>/extensions/pipeline-catalog.yaml
 apiVersion: project.jenkins-x.io/v1alpha1
@@ -26,12 +26,12 @@ kind: PipelineCatalog
 spec:
   repositories:
   - label: Your Pipeline Catalog
-    gitUrl: https://github.com/<your-org>/jx3-pipeline-catalog
+    gitUrl: https://github.com/<your-org>/jaraxa-pipeline-catalog
     gitRef: master
 ```
 
 
-For more detail there's [the configuration reference here](https://github.com/jenkins-x/jx-project/blob/master/docs/config.md#project.jenkins-x.io/v1alpha1.PipelineCatalog).
+For more detail there's [the configuration reference here](https://github.com/jaraxasoftware/jx-project/blob/master/docs/config.md#project.jenkins-x.io/v1alpha1.PipelineCatalog).
 
 Then when developers create a new quickstart or import a repository developers will be asked to pick the catalog they want from your list if there is more than one, or the configured catalog is silently used.
 

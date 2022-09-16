@@ -1,4 +1,4 @@
-module github.com/jenkins-x/jx3-pipeline-catalog
+module github.com/jenkins-x/jaraxa-pipeline-catalog
 
 go 1.17
 

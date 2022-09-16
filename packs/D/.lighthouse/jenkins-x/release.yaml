@@ -11,14 +11,14 @@ spec:
       taskSpec:
         metadata: {}
         stepTemplate:
-          image: uses:jenkins-x/jx3-pipeline-catalog/tasks/D/release.yaml@versionStream
+          image: uses:jaraxasotfware/jaraxa-pipeline-catalog/tasks/D/release.yaml@versionStream
           name: ""
           resources:
             # override limits for all containers here
             limits: {}
           workingDir: /workspace/source
         steps:
-        - image: uses:jenkins-x/jx3-pipeline-catalog/tasks/git-clone/git-clone.yaml@versionStream
+        - image: uses:jaraxasotfware/jaraxa-pipeline-catalog/tasks/git-clone/git-clone.yaml@versionStream
           name: ""
           resources: {}
         - name: next-version

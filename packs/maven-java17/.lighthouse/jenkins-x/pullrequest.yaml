@@ -14,7 +14,7 @@ spec:
           env:
           - name: MAVEN_OPTS
             value: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=25 -Dmaven.wagon.http.retryHandler.count=3
-          image: uses:jenkins-x/jx3-pipeline-catalog/tasks/maven-java17/pullrequest.yaml@versionStream
+          image: uses:jaraxasotfware/jaraxa-pipeline-catalog/tasks/maven-java17/pullrequest.yaml@versionStream
           name: ""
           resources:
             # override limits for all containers here
@@ -24,7 +24,7 @@ spec:
             name: maven-settings
           workingDir: /workspace/source
         steps:
-        - image: uses:jenkins-x/jx3-pipeline-catalog/tasks/git-clone/git-clone-pr.yaml@versionStream
+        - image: uses:jaraxasotfware/jaraxa-pipeline-catalog/tasks/git-clone/git-clone-pr.yaml@versionStream
           name: ""
           resources: {}
         - name: jx-variables

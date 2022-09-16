@@ -11,7 +11,7 @@ spec:
       taskSpec:
         metadata: {}
         stepTemplate:
-          image: uses:jaraxasoftware/jx3-pipeline-catalog/tasks/go/release.yaml@versionStream
+          image: uses:jaraxasoftware/jaraxa-pipeline-catalog/tasks/go/release.yaml@versionStream
           name: ""
           resources:
             # override limits for all containers here

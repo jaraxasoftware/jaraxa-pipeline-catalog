@@ -1,4 +1,4 @@
-NAME := jx3-pipeline-catalog
+NAME := jaraxa-pipeline-catalog
 GO := GO111MODULE=on go
 
 BUILDFLAGS :=
