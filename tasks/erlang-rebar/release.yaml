@@ -21,8 +21,8 @@ spec:
           name: ""
           resources:
             requests:
-              cpu: 800m
-              memory: 1000Mi
+              cpu: 400m
+              memory: 600Mi
           volumeMounts:
           - mountPath: /root/.gnupg
             name: release-gpg         
