@@ -111,6 +111,7 @@ spec:
 
             git add * || true
             git commit -a -m "Pre-release $VERSION" --allow-empty
+            git tag -fa v$VERSION -m "Pre-release version $VERSION"
             git push --force origin v$VERSION
 
             jx changelog create --prerelease --version v${VERSION}            
