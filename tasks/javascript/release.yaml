@@ -54,7 +54,7 @@ spec:
               memory: 512Mi
           script: |
             #!/usr/bin/env sh
-            jx gitops variables --commit false
+            jx gitops variables
         - image: node:14-slim
           name: build-npm-install
           resources: {}
