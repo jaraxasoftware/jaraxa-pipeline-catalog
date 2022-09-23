@@ -110,7 +110,7 @@ spec:
             git commit -a -m "chore: release $VERSION" --allow-empty
             git push --force origin v$VERSION
 
-            jx changelog create --draft --prerelease --version v${VERSION}            
+            jx changelog create --version v${VERSION}            
         - image: ghcr.io/jenkins-x/jx-changelog:0.3.0
           name: promote-changelog
           resources: {}
