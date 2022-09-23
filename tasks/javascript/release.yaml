@@ -115,7 +115,7 @@ spec:
             else echo no charts; fi
 
             git add * || true
-            git commit -a -m "Pre-release $VERSION" --allow-empty
+            git commit -a -m "chore: Pre-release $VERSION" --allow-empty
             git tag -fa v$VERSION -m "Pre-release version $VERSION"
             git push --force origin v$VERSION
 
