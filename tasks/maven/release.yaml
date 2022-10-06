@@ -88,6 +88,21 @@ spec:
             mvn versions:set -DnewVersion=$VERSION
 
             mvn --no-transfer-progress clean deploy
+        - image: maven:3.6-openjdk-8-slim
+          name: build-mvn-sonar-scan
+          resources: {}
+          script: |
+            #!/usr/bin/env bash
+            source .jx/variables.sh
+
+            mvn clean verify sonar:sonar \
+              -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+              -Dsonar.exclusions=$SONAR_EXCLUSIONS \
+              -Dsonar.sourceEncoding=UTF-8 \
+              -Dsonar.sources=. \
+              -Dsonar.projectVersion=$VERSION \
+              -Dsonar.host.url=$SONAR_URL \
+              -Dsonar.login=$SONAR_TOKEN          
         - image: ghcr.io/jenkins-x/jx-registry:0.1.8
           name: check-registry
           resources: {}
