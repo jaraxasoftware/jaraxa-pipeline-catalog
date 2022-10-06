@@ -68,6 +68,14 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx gitops variables
+        - image: node:8-slim
+          name: build-npm-install
+          resources: {}          
+          script: |
+            #!/usr/bin/env sh
+            source .jx/variables.sh
+            npm ci --prefer-offline --no-audit
+            ./node_modules/.bin/gulp release
         - image: maven:3.6-openjdk-8-slim
           name: build-mvn-deploy
           resources: {}
