@@ -87,7 +87,7 @@ spec:
             echo "upgrading the pom to version $VERSION"
             mvn versions:set -DnewVersion=$VERSION
 
-            mvn --no-transfer-progress deploy
+            mvn clean --no-transfer-progress deploy
         - image: maven:3.6-openjdk-8-slim
           name: build-mvn-sonar-scan
           resources: {}
