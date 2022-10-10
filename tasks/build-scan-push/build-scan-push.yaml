@@ -39,7 +39,7 @@ spec:
     resources: {}
     script: |
       trivy image --skip-update --input /workspace/source/image.tar > /workspace/source/scanresults.txt
-  - image: ghcr.io/jenkins-x/jx-boot:3.7.8
+  - image: ghcr.io/jenkins-x/jx-boot:3.5.4
     name: analyze-pr
     resources: {}
     script: |
@@ -51,6 +51,19 @@ spec:
       then
       echo "Vulnerabilities found!"
       exit 1
+      else
+      echo "No vulnerabilities found."
+      fi      
+  - image: ghcr.io/jenkins-x/jx-boot:3.5.4
+    name: analyze
+    resources: {}
+    script: |
+      #!/bin/bash
+      source .jx/variables.sh
+      cat /workspace/source/scanresults.txt
+      if egrep -ri 'HIGH|CRITICAL' /workspace/source/scanresults.txt | grep -v 'Total'
+      then
+      echo "Vulnerabilities found!"
       else
       echo "No vulnerabilities found."
       fi
