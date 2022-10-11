@@ -74,7 +74,19 @@ spec:
             #!/usr/bin/env sh
             source .jx/variables.sh
             npm ci --prefer-offline --no-audit
-            ./node_modules/.bin/gulp release            
+            ./node_modules/.bin/gulp release
+        - image: maven:3.6-openjdk-11
+          name: build-mvn-deploy-snapshot
+          resources: {}
+          script: |
+            #!/usr/bin/env bash
+            source .jx/variables.sh
+
+            # modify the pom.xml
+            echo "upgrading the pom to snapshot version $VERSION"
+            mvn versions:set -DnewVersion=$VERSION-SNAPSHOT
+
+            mvn --no-transfer-progress clean deploy                 
         - image: maven:3.6-openjdk-11
           name: build-mvn-deploy
           resources: {}
