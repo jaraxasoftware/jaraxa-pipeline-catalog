@@ -48,6 +48,11 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx-release-version --tag --debug > VERSION
+        - image: ghcr.io/jenkins-x/jx-release-version:2.6.0
+          name: next-version-uat
+          script: |
+            #!/usr/bin/env sh
+            jx-release-version -debug -next-version=semantic:strip-prerelease -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT > VERSION                
         - image: ghcr.io/jenkins-x/jx-boot:3.5.4
           name: jx-variables
           resources:
@@ -66,7 +71,7 @@ spec:
             source .jx/variables.sh
 
             # modify the pom.xml
-            echo "upgrading the pom to snapshot version $VERSION"
+            echo "upgrading the pom to snapshot version $VERSION-SNAPSHOT"
             mvn versions:set -DnewVersion=$VERSION-SNAPSHOT
 
             mvn --no-transfer-progress clean deploy            
