@@ -140,6 +140,11 @@ spec:
             source .jx/variables.sh
             cp /tekton/creds-secrets/tekton-container-registry-auth/.dockerconfigjson /kaniko/.docker/config.json
             /kaniko/executor $KANIKO_FLAGS \
+              --skip-unused-stages \
+              --cache=true \
+              --cache-repo=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME_cache \
+              --cache-copy-layers \
+              --cleanup \            
               --context=/workspace/source \
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
