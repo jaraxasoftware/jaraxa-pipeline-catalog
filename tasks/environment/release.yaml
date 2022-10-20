@@ -18,7 +18,17 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: do_token
-                name: k8s-auth            
+                name: k8s-auth
+          - name: GIT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: tekton-git
+          - name: GIT_USER
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: tekton-git                           
           envFrom:
           - secretRef:
               name: jx-boot-job-env-vars
