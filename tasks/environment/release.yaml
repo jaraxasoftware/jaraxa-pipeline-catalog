@@ -12,6 +12,12 @@ spec:
         metadata: {}
         stepTemplate:
           env:
+          - name: DO_ACCESS_TOKEN
+            value: ""
+          - name: CLUSTER_ID
+            value: ""
+          - name: CLUSTER_NAME
+            value: ""
           - name: HOME
             value: /tekton/home
           envFrom:
@@ -23,6 +29,22 @@ spec:
             limits: {}
           workingDir: /workspace/source
         steps:
+        - image: digitalocean/doctl:1.84.0
+          name: doctl-auth
+          resources: {}
+          script: |
+            doctl auth init --access-token $DO_ACCESS_TOKEN
+        - image: digitalocean/doctl:1.84.0
+          name: doctl-ctx
+          resources: {}
+          script: |
+            doctl kubernetes cluster kubeconfig save $CLUSTER_ID
+        - image: ghcr.io/jenkins-x/jx-admin:0.0.174
+          name: admin-log
+          script: |
+            #!/usr/bin/env sh
+            echo "Changing context to $CLUSTER_ID cluster"
+            jx ctx $CLUSTER_NAME 
         - image: ghcr.io/jenkins-x/jx-admin:0.0.174
           name: admin-log
           resources:
