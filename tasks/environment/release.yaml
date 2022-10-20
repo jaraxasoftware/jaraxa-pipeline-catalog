@@ -33,7 +33,7 @@ spec:
           name: doctl-ctx
           resources: {}
           script: |
-            doctl kubernetes cluster kubeconfig save $CLUSTER_ID
+            ./doctl kubernetes cluster kubeconfig save $CLUSTER_ID
         - image: ghcr.io/jenkins-x/jx-admin:0.0.174
           name: ctx-change
           script: |
