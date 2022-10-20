@@ -14,6 +14,11 @@ spec:
           env:
           - name: HOME
             value: /tekton/home
+          - name: DIGITALOCEAN_ACCESS_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: do_token
+                name: k8s-auth            
           envFrom:
           - secretRef:
               name: jx-boot-job-env-vars
@@ -35,13 +40,7 @@ spec:
             mkdir /workspace/source/bin
             mv ./doctl /workspace/source/bin/doctl
             chmod +x /workspace/source/bin/doctl
-        - env:
-          - name: DIGITALOCEAN_ACCESS_TOKEN
-            valueFrom:
-              secretKeyRef:
-                key: do_token
-                name: k8s-auth
-          image: ghcr.io/jenkins-x/jx-boot:3.5.4
+        - image: ghcr.io/jenkins-x/jx-boot:3.5.4
           name: do-ctx
           script: |
             #!/usr/bin/env sh
