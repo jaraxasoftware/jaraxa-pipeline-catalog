@@ -41,7 +41,7 @@ spec:
             mkdir /workspace/source/bin
             mv ./doctl /workspace/source/bin/doctl
             chmod +x /workspace/source/bin/doctl
-        - image: ghcr.io/jenkins-x/jx-admin:0.0.174
+        - image: ghcr.io/jenkins-x/jx-boot:3.5.4
           name: ctx-change
           script: |
             #!/usr/bin/env sh
