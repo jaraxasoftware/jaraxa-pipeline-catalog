@@ -12,7 +12,7 @@ spec:
         metadata: {}
         stepTemplate:
           env:
-          - name: DO_ACCESS_TOKEN
+          - name: DIGITALOCEAN_ACCESS_TOKEN
             value: ""
           - name: CLUSTER_ID
             value: ""
@@ -29,11 +29,6 @@ spec:
             limits: {}
           workingDir: /workspace/source
         steps:
-        - image: digitalocean/doctl:1.84.0
-          name: doctl-auth
-          resources: {}
-          script: |
-            doctl auth init --access-token $DO_ACCESS_TOKEN
         - image: digitalocean/doctl:1.84.0
           name: doctl-ctx
           resources: {}
