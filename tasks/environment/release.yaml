@@ -42,12 +42,17 @@ spec:
                 key: do_token
                 name: k8s-auth
           image: ghcr.io/jenkins-x/jx-boot:3.5.4
+          name: do-ctx
+          script: |
+            #!/usr/bin/env sh
+            echo "Saving context $CLUSTER_NAME"
+            /workspace/source/bin/doctl kubernetes cluster kubeconfig save $CLUSTER_ID
+        - image: ghcr.io/jenkins-x/jx-boot:3.5.4
           name: ctx-change
           script: |
             #!/usr/bin/env sh
             echo "Changing context to $CLUSTER_NAME cluster"
-            /workspace/source/bin/doctl kubernetes cluster kubeconfig save $CLUSTER_ID
-            jx ctx $CLUSTER_NAME
+            jx ctx $CLUSTER_NAME            
         - image: ghcr.io/jenkins-x/jx-admin:0.0.174
           name: admin-log
           resources:
