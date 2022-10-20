@@ -40,10 +40,10 @@ spec:
           script: |
             doctl kubernetes cluster kubeconfig save $CLUSTER_ID
         - image: ghcr.io/jenkins-x/jx-admin:0.0.174
-          name: admin-log
+          name: ctx-change
           script: |
             #!/usr/bin/env sh
-            echo "Changing context to $CLUSTER_ID cluster"
+            echo "Changing context to $CLUSTER_NAME cluster"
             jx ctx $CLUSTER_NAME 
         - image: ghcr.io/jenkins-x/jx-admin:0.0.174
           name: admin-log
