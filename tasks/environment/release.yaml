@@ -29,16 +29,23 @@ spec:
             limits: {}
           workingDir: /workspace/source
         steps:
-        - image: digitalocean/doctl:1.84.0
-          name: doctl-ctx
+        - name: install-doctl
+          image: alpine:3.16
           resources: {}
           script: |
-            /app/doctl kubernetes cluster kubeconfig save $CLUSTER_ID
+            #!/bin/sh
+            DOCTL_VERSION=1.84.0
+            apk add --no-cache wget
+            wget https://github.com/digitalocean/doctl/releases/download/v${DOCTL_VERSION}/doctl-${DOCTL_VERSION}-linux-amd64.tar.gz            
+            tar xf ./doctl-${DOCTL_VERSION}-linux-amd64.tar.gz
+            sudo mv ./doctl /workspace/source/bin
+            chmod +x /workspace/source/bin/doctl
         - image: ghcr.io/jenkins-x/jx-admin:0.0.174
           name: ctx-change
           script: |
             #!/usr/bin/env sh
             echo "Changing context to $CLUSTER_NAME cluster"
+            /workspace/source/bin/doctl kubernetes cluster kubeconfig save $CLUSTER_ID
             jx ctx $CLUSTER_NAME
         - image: ghcr.io/jenkins-x/jx-admin:0.0.174
           name: admin-log
