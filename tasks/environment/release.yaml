@@ -12,12 +12,6 @@ spec:
         metadata: {}
         stepTemplate:
           env:
-          - name: DIGITALOCEAN_ACCESS_TOKEN
-            value: ""
-          - name: CLUSTER_ID
-            value: ""
-          - name: CLUSTER_NAME
-            value: ""
           - name: HOME
             value: /tekton/home
           envFrom:
@@ -41,7 +35,13 @@ spec:
             mkdir /workspace/source/bin
             mv ./doctl /workspace/source/bin/doctl
             chmod +x /workspace/source/bin/doctl
-        - image: ghcr.io/jenkins-x/jx-boot:3.5.4
+        - env:
+          - name: DIGITALOCEAN_ACCESS_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: do_token
+                name: k8s-auth
+          image: ghcr.io/jenkins-x/jx-boot:3.5.4
           name: ctx-change
           script: |
             #!/usr/bin/env sh
