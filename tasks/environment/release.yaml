@@ -38,7 +38,7 @@ spec:
             apk add --no-cache wget
             wget https://github.com/digitalocean/doctl/releases/download/v${DOCTL_VERSION}/doctl-${DOCTL_VERSION}-linux-amd64.tar.gz            
             tar xf ./doctl-${DOCTL_VERSION}-linux-amd64.tar.gz
-            sudo mv ./doctl /workspace/source/bin
+            sudo mv ./doctl /workspace/source/bin/doctl
             chmod +x /workspace/source/bin/doctl
         - image: ghcr.io/jenkins-x/jx-admin:0.0.174
           name: ctx-change
