@@ -50,13 +50,13 @@ spec:
             mkdir /workspace/source/bin
             mv ./doctl /workspace/source/bin/doctl
             chmod +x /workspace/source/bin/doctl
-        - image: ghcr.io/jenkins-x/jx-boot:3.5.4
+        - image: ghcr.io/jenkins-x/jx-boot:3.7.8
           name: do-ctx
           script: |
             #!/usr/bin/env sh
             echo "Saving context $CLUSTER_NAME"
             /workspace/source/bin/doctl kubernetes cluster kubeconfig save $CLUSTER_ID
-        - image: ghcr.io/jenkins-x/jx-boot:3.5.4
+        - image: ghcr.io/jenkins-x/jx-boot:3.7.8
           name: ctx-change
           script: |
             #!/usr/bin/env sh
