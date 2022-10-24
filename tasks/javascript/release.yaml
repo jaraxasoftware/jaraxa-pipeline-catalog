@@ -76,7 +76,7 @@ spec:
           name: build-npm-version
           resources: {}
           script: |
-            #!/bin/sh
+            #!/bin/bash
             source .jx/variables.sh
             npm --no-git-tag-version version $VERSION  
         - image: node:14-slim
