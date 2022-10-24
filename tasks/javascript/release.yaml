@@ -72,6 +72,12 @@ spec:
           script: |
             #!/bin/sh
             CI=true DISPLAY=:99 npm test
+        - image: node:14-slim
+          name: build-npm-publish
+          resources: {}
+          script: |
+            #!/bin/sh
+            npm publish
         - image: sonarsource/sonar-scanner-cli:4.7.0
           name: sonar-code-analisys
           resources: {}
