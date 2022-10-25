@@ -56,18 +56,15 @@ spec:
             #!/usr/bin/env sh
             echo "Saving context $CLUSTER_NAME"
             /workspace/source/bin/doctl kubernetes cluster kubeconfig save $CLUSTER_ID
-        - image: ghcr.io/jenkins-x/jx-boot:3.9.5
+        - image: ghcr.io/jaraxasoftware/kubectx:latest
           name: ctx-change
           script: |
-            #!/usr/bin/env sh
+            #!/bin/bash
             echo "Changing context to $CLUSTER_NAME cluster"
-            jx ctx $CLUSTER_NAME            
+            kubectl ctx $CLUSTER_NAME          
         - image: ghcr.io/jenkins-x/jx-admin:0.0.174
           name: admin-log
-          resources:
-            requests:
-              cpu: 400m
-              memory: 512Mi
+          resources: {}
           script: |
             #!/usr/bin/env sh
             echo "viewing the git operator boot job log for commit sha: $PULL_BASE_SHA"
