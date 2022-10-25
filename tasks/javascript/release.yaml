@@ -170,9 +170,10 @@ spec:
               secretKeyRef:
                 key: password
                 name: tekton-git
-          image: ghcr.io/jenkins-x-plugins/jx-promote:0.1.0
+          image: ghcr.io/jenkins-x-plugins/jx-promote:0.4.6
           name: promote-jx-promote
           resources: {}
+          onError: continue
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
