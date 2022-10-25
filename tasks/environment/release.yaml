@@ -19,7 +19,7 @@ spec:
               secretKeyRef:
                 key: do_token
                 name: k8s-auth
-          - name: GIT_TOKEN
+          - name: GH_TOKEN
             valueFrom:
               secretKeyRef:
                 key: password
