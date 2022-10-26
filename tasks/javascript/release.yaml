@@ -121,8 +121,7 @@ spec:
           name: promote-changelog-uat
           resources: {}
           script: |
-            #!/usr/bin/env sh
-            set +xv          
+            #!/usr/bin/env sh -x       
             source .jx/variables.sh
 
             if [ -d "charts/$REPO_NAME" ]; then
