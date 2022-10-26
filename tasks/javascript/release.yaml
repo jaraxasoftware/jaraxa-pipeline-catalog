@@ -142,6 +142,7 @@ spec:
           resources: {}
           script: |
             #!/usr/bin/env sh
+            set +x
             source .jx/variables.sh
 
             if [ -d "charts/$REPO_NAME" ]; then
