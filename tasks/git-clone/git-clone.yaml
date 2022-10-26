@@ -23,7 +23,7 @@ spec:
     name: git-clone
     resources: {}
     script: |
-      #!/bin/sh -xv
+      #!/bin/sh -x
       export SUBDIR="source"
       echo "git cloning url: $REPO_URL version $PULL_BASE_REF@$PULL_BASE_SHA to dir: $SUBDIR"
       git config --global --add user.name ${GIT_AUTHOR_NAME:-jenkins-x-bot}
@@ -34,7 +34,6 @@ spec:
       cd $SUBDIR
       git reset --hard $PULL_BASE_SHA
       echo "checked out revision: $PULL_BASE_REF@$PULL_BASE_SHA to dir: $SUBDIR"
-
     workingDir: /workspace
   workspaces:
   - description: The git repo will be cloned onto the volume backing this workspace
