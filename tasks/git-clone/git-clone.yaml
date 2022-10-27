@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   creationTimestamp: null
-  name: git-clone-pr
+  name: git-clone
 spec:
   stepTemplate:
     env:
