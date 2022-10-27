@@ -64,13 +64,15 @@ spec:
           name: build-npm-install
           resources: {}
           script: |
-            #!/bin/sh
+            #!/bin/bash
+            source .jx/variables.sh
             npm install
         - image: node:14-slim
           name: build-npm-test
           resources: {}
           script: |
-            #!/bin/sh
+            #!/bin/bash
+            source .jx/variables.sh
             CI=true DISPLAY=:99 npm test
         - image: node:14-slim
           name: build-npm-version
@@ -83,7 +85,8 @@ spec:
           name: build-npm-publish
           resources: {}
           script: |
-            #!/bin/sh
+            #!/bin/bash
+            source .jx/variables.sh
             npm publish
         - image: sonarsource/sonar-scanner-cli:4.7.0
           name: sonar-code-analisys
