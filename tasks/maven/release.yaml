@@ -143,7 +143,7 @@ spec:
               --skip-unused-stages \
               --cache=true \
               --cache-repo=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME \
-              --cache-copy-layers \          
+              --cache-copy-layers \
               --context=/workspace/source \
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
