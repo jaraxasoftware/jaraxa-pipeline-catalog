@@ -49,7 +49,17 @@ spec:
           name: next-version-uat
           script: |
             #!/usr/bin/env sh
-            jx-release-version -debug -next-version=semantic:strip-prerelease -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT > VERSION            
+            jx-release-version -debug -next-version=semantic:strip-prerelease -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT > VERSION
+        - image: ghcr.io/jenkins-x/jx-release-version:2.6.0
+          name: next-version-package-json
+          script: |
+            #!/usr/bin/env sh
+            jx-release-version -debug -next-version=from-file:package.json > VERSION
+        - image: ghcr.io/jenkins-x/jx-release-version:2.6.0
+          name: next-version-package-json-uat
+          script: |
+            #!/usr/bin/env sh
+            jx-release-version -debug -next-version=from-file:package.json -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT-BUILD_ID > VERSION                           
         - image: ghcr.io/jenkins-x/jx-boot:3.9.5
           name: jx-variables
           resources:
