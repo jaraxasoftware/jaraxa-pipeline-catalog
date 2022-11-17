@@ -59,7 +59,7 @@ spec:
           name: next-version-package-json-uat
           script: |
             #!/usr/bin/env sh
-            jx-release-version -debug -next-version=from-file:package.json -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT-BUILD_ID > VERSION                           
+            jx-release-version -debug -next-version=from-file:package.json -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT-$BUILD_ID > VERSION                           
         - image: ghcr.io/jenkins-x/jx-boot:3.9.5
           name: jx-variables
           resources:
