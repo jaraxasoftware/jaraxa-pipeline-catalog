@@ -90,7 +90,7 @@ spec:
           script: |
             #!/bin/bash
             source .jx/variables.sh
-            npm --no-git-tag-version version $VERSION  
+            npm --no-git-tag-version version $VERSION-SNAPSHOT
         - image: node:14-slim
           name: build-npm-publish
           resources: {}
