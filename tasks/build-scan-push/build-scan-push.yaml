@@ -80,7 +80,9 @@ spec:
       source .jx/variables.sh
       export PATH=/workspace/source:$PATH
       cp /tekton/creds-secrets/tekton-container-registry-auth/.dockerconfigjson ~/.docker/config.json
-      crane push /workspace/source/image.tar $PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
+      crane push /workspace/source/image.tar \
+        $PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION \
+        $PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest
   - image: ghcr.io/alexkondrat/container-tools:latest
     name: push-sign-verify
     resources: {}
