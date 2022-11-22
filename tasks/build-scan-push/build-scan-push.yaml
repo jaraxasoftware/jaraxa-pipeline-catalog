@@ -27,6 +27,7 @@ spec:
         --context=/workspace/source \
         --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
         --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION \
+        --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest \
         --no-push \
         --tarPath image.tar
       cp /kaniko/docker-credential-gcr /workspace/source
