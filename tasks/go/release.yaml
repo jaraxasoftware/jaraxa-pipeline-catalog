@@ -76,9 +76,11 @@ spec:
               --cache=true \
               --cache-repo=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME \
               --cache-copy-layers \
+              --cleanup \
               --context=/workspace/source \
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
-              --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
+              --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION \
+              --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest
         - image: ghcr.io/jenkins-x/jx-changelog:0.3.0
           name: promote-changelog-uat
           resources: {}
