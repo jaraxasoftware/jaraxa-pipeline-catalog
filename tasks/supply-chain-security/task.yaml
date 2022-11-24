@@ -12,7 +12,7 @@ spec:
       #!/bin/sh
       apk add --no-cache curl unzip
       curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | \
-      sh -s -- -b /workspace/source/bin v0.52.0
+      sh -s -- -b /workspace/source/bin v0.62.1
       chmod +x /workspace/source/bin/syft
   - name: build-and-push-sbom
     image: ghcr.io/oras-project/oras:v0.13.0
