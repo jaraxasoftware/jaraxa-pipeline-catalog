@@ -163,7 +163,7 @@ spec:
               --repo $REPO_NAME \
               --tag v${VERSION} \
               --name "$REPO_NAME-linux-amd64" \
-              --file $ARTIFACT-$VERSION
+              --file $ARTIFACT-latest
         - image: ghcr.io/jenkins-x/jx-boot:3.9.5
           name: promote-helm-release
           resources: {}
