@@ -61,7 +61,7 @@ spec:
             #!/bin/bash
             source .jx/variables.sh
             git config --global url."https://".insteadOf git://
-            rebar3 release --relvsn $VERSION --relname $APP_NAME --output-dir ./
+            rebar3 release --relname $APP_NAME --output-dir ./
         - image: erlang:21.3.8.11
           name: build-erlang-release
           resources: {}
