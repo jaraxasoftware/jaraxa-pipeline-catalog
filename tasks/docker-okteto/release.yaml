@@ -55,6 +55,12 @@ spec:
             #!/bin/bash
             okteto context use $OKTETO_URL -n $OKTETO_NAMESPACE -t $OKTETO_TOKEN
         - image: okteto/okteto:2.9.1
+          name: okteto-build
+          resources: {}
+          script: |
+            #!/bin/bash
+            okteto build -f $OKTETO_COMPOSE -n $KOMPOSE_NAMESPACE            
+        - image: okteto/okteto:2.9.1
           name: okteto-deploy
           resources: {}
           script: |
