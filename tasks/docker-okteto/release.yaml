@@ -41,7 +41,7 @@ spec:
           resources: {}
           script: |
             #!/bin/bash
-            okteto context -l debug use $OKTETO_URL -t $OKTETO_TOKEN
+            okteto context -l debug use $OKTETO_URL -n $OKTETO_NAMESPACE -t $OKTETO_TOKEN
         - image: okteto/okteto:2.9.1
           name: okteto-build
           resources: {}
