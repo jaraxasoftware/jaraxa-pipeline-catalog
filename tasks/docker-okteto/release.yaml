@@ -47,6 +47,7 @@ spec:
           resources: {}
           script: |
             #!/bin/bash
+            cp .env_docker .env
             okteto build -f $OKTETO_COMPOSE -n $KOMPOSE_NAMESPACE            
         - image: okteto/okteto:2.9.1
           name: okteto-deploy
