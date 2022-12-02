@@ -84,13 +84,13 @@ spec:
         - image: curlimages/curl
           name: okteto-tests-curl
           resources: {}
-          args: [
-          	"--write-out",
-            "'%{http_code}\n'",
-            "--silent",
-            "--output /dev/null",
-            "-XPOST -i -H "content-type: application/json" -H "x-netcomposer-auth: YWRtaW46bmV0Y29tcG9zZXI=" ${SHP_API_URL_OKT} -d '{ "cmd": "objects/node/load_objs", "data": {"objs": [{"path": "/file.stores/local", "type": "file.store", "file.store": {"class": "filesystem", "config": {"path": "/files.stores/local"}}}]}}'"
-          ]
+          script: |
+            #!/bin/bash
+	          curl --write-out '%{http_code}\n' \
+            --silent \
+            --output /dev/null \
+            -XPOST -i -H "content-type: application/json" -H "x-netcomposer-auth: YWRtaW46bmV0Y29tcG9zZXI=" \
+            ${SHP_API_URL_OKT} -d '{ "cmd": "objects/node/load_objs", "data": {"objs": [{"path": "/file.stores/local", "type": "file.store", "file.store": {"class": "filesystem", "config": {"path": "/files.stores/local"}}}]}}'
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
