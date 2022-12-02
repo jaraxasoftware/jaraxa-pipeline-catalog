@@ -81,16 +81,12 @@ spec:
             mc mb -p myminio/pet-files;
             mc policy set public myminio/pet-files;
             exit 0;
-        - image: curlimages/curl
+        - image: continuul/build-essential
           name: okteto-tests-curl
           resources: {}
           script: |
             #!/bin/bash
-	          curl --write-out '%{http_code}\n' \
-            --silent \
-            --output /dev/null \
-            -XPOST -i -H "content-type: application/json" -H "x-netcomposer-auth: YWRtaW46bmV0Y29tcG9zZXI=" \
-            ${SHP_API_URL_OKT} -d '{ "cmd": "objects/node/load_objs", "data": {"objs": [{"path": "/file.stores/local", "type": "file.store", "file.store": {"class": "filesystem", "config": {"path": "/files.stores/local"}}}]}}'
+            make $OKTETO_TARGET
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
