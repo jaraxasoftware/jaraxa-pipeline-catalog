@@ -72,12 +72,25 @@ spec:
           script: |
             #!/bin/bash
             okteto destroy -f $OKTETO_COMPOSE -n $KOMPOSE_NAMESPACE -v
-        - image: okteto/okteto:2.9.1
-          name: okteto-tests
+        - image: minio/mc
+          name: okteto-create-buckets
           resources: {}
           script: |
             #!/bin/bash
-            make $OKTETO_TARGET
+            mc alias set myminio https://dkv-pet-minio-kompose.develop.jaraxa.systems minio minio123;
+            mc mb -p myminio/pet-files;
+            mc policy set public myminio/pet-files;
+            exit 0;
+        - image: curlimages/curl
+          name: okteto-tests-curl
+          resources: {}
+          args: [
+          	"--write-out",
+            "'%{http_code}\n'",
+            "--silent",
+            "--output /dev/null",
+            "-XPOST -i -H "content-type: application/json" -H "x-netcomposer-auth: YWRtaW46bmV0Y29tcG9zZXI=" ${SHP_API_URL_OKT} -d '{ "cmd": "objects/node/load_objs", "data": {"objs": [{"path": "/file.stores/local", "type": "file.store", "file.store": {"class": "filesystem", "config": {"path": "/files.stores/local"}}}]}}'"
+          ]
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
