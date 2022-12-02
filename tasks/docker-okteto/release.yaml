@@ -12,18 +12,6 @@ spec:
         metadata: {}
         stepTemplate:
           env:
-          - name: OKTETO_URL
-            value: ""
-          - name: OKTETO_NAMESPACE
-            value: ""
-          - name: OKTETO_TOKEN
-            value: ""
-          - name: OKTETO_COMPOSE
-            value: docker-compose.yaml
-          - name: KOMPOSE_NAMESPACE
-            value: ""
-          - name: OKTETO_TARGET
-            value: ""
           - name: HOME
             value: /tekton/home
           envFrom:
@@ -53,7 +41,7 @@ spec:
           resources: {}
           script: |
             #!/bin/bash
-            okteto context use $OKTETO_URL -n $OKTETO_NAMESPACE -t $OKTETO_TOKEN
+            okteto context -l debug use $OKTETO_URL -n $OKTETO_NAMESPACE -t $OKTETO_TOKEN
         - image: okteto/okteto:2.9.1
           name: okteto-build
           resources: {}
