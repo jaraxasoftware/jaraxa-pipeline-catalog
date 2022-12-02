@@ -76,6 +76,8 @@ spec:
           script: |
             #!/bin/bash
             make $OKTETO_TARGET
+            echo "Visit https://ci-ui-kompose.develop.jaraxa.systems/ to get tests result report"
+            echo "Login: admin@jaraxa.com / 12345678"
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
