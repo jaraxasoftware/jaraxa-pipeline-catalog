@@ -22,8 +22,7 @@ spec:
               optional: true
           name: ""
           resources:
-            limits: 
-              memory: {}
+            limits: {}
           volumeMounts:
           - mountPath: /tekton/home/npm
             name: npmrc
