@@ -50,6 +50,14 @@ spec:
             #!/usr/bin/env bash
             source .jx/variables.sh
             hadolint --no-fail Dockerfile
+        - image: gcr.io/kaniko-project/executor:v1.6.0-debug
+          name: build-container-build
+          resources: {}
+          script: |
+            #!/busybox/sh
+            source .jx/variables.sh
+            cp /tekton/creds-secrets/tekton-container-registry-auth/.dockerconfigjson /kaniko/.docker/config.json
+            /kaniko/executor $KANIKO_FLAGS --context=/workspace/source --dockerfile=${DOCKERFILE_PATH:-Dockerfile} --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION            
         - image: ghcr.io/jenkins-x/jx-boot:3.9.5
           name: build-helm-build
           resources: {}
