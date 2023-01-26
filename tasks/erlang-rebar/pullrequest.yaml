@@ -40,6 +40,14 @@ spec:
             source .jx/variables.sh
             echo "Erlang/Rebar3 versions are:"
             rebar3 version
+        - image: erlang:21.3.8.24
+          name: build-erlang-develop
+          resources: {}
+          script: |
+            #!/bin/bash
+            source .jx/variables.sh
+            git config --global url."https://".insteadOf git://
+            rebar3 release --relname $APP_NAME --output-dir ./            
         - image: ghcr.io/jenkins-x/jx-registry:0.1.1
           name: check-registry
           resources: {}
