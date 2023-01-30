@@ -54,7 +54,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx gitops variables
-        - image: erlang:21.3.8.11
+        - image: erlang:21.3.8.24
           name: build-erlang-develop
           resources: {}
           script: |
@@ -62,7 +62,7 @@ spec:
             source .jx/variables.sh
             git config --global url."https://".insteadOf git://
             rebar3 release --relname $APP_NAME --output-dir ./
-        - image: erlang:21.3.8.11
+        - image: erlang:21.3.8.24
           name: build-erlang-release
           resources: {}
           script: |
@@ -70,7 +70,7 @@ spec:
             source .jx/variables.sh
             git config --global url."https://".insteadOf git://            
             rebar3 as $REBAR_RELEASE release --output-dir ./
-        - image: erlang:21.3.8.11
+        - image: erlang:21.3.8.24
           name: eunit-tests
           resources: {}
           script: |

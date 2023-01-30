@@ -32,7 +32,7 @@ spec:
             #!/usr/bin/env sh
             jx gitops variables
             jx gitops pr variables
-        - image: erlang:21.3.8.11
+        - image: erlang:21.3.8.24
           name: check-erlang
           resources: {}
           script: |
