@@ -172,10 +172,15 @@ spec:
             source .jx/variables.sh
             jx gitops helm release
         - env:
-          - name: GH_TOKEN
+          - name: GIT_TOKEN
             valueFrom:
               secretKeyRef:
                 key: password
+                name: tekton-git
+          - name: GIT_USER
+            valueFrom:
+              secretKeyRef:
+                key: username
                 name: tekton-git
           image: ghcr.io/jenkins-x-plugins/jx-promote:0.6.2
           name: promote-jx-promote
@@ -189,6 +194,12 @@ spec:
           secret:
             optional: true
             secretName: npmrc
+        workspaces:
+          - name: source
+            description: |
+              Default Workspace
+            optional: false
+            mountPath: /workspace/source            
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
