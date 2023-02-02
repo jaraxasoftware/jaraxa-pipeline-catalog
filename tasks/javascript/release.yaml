@@ -132,7 +132,7 @@ spec:
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest 
-        - image: ghcr.io/jenkins-x/jx-changelog:0.9.5
+        - image: ghcr.io/jenkins-x/jx-changelog:0.9.2
           name: promote-changelog-uat
           resources: {}
           script: |
@@ -144,7 +144,7 @@ spec:
             jx gitops yset -p 'image.repository' -v $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME -f ./charts/$REPO_NAME/values.yaml
             jx gitops yset -p 'image.tag' -v "$VERSION" -f ./charts/$REPO_NAME/values.yaml;
             else echo no charts; fi        
-        - image: ghcr.io/jenkins-x/jx-changelog:0.9.5
+        - image: ghcr.io/jenkins-x/jx-changelog:0.9.2
           name: promote-changelog
           resources: {}
           script: |

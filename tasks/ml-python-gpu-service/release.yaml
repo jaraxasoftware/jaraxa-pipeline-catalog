@@ -85,7 +85,7 @@ spec:
               --context=/workspace/source \
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
-        - image: ghcr.io/jenkins-x/jx-changelog:0.9.5
+        - image: ghcr.io/jenkins-x/jx-changelog:0.9.2
           name: promote-changelog-uat
           resources: {}
           script: |
@@ -105,7 +105,7 @@ spec:
             git push --force origin v$VERSION
 
             jx changelog create --draft --version v${VERSION}
-        - image: ghcr.io/jenkins-x/jx-changelog:0.9.5
+        - image: ghcr.io/jenkins-x/jx-changelog:0.9.2
           name: promote-changelog
           resources: {}
           script: |
