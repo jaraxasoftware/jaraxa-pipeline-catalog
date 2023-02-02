@@ -109,7 +109,14 @@ spec:
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
-            jx promote -b --all --timeout 1h --no-poll
+            jx promote -b --env $ENVIRONMENT --timeout 1h --no-poll
+        - name: promote-jx-updatebot-sync
+          image: ghcr.io/jenkins-x/jx-updatebot:0.4.1
+          resources: {}
+          script: |
+            #!/usr/bin/env sh
+            source .jx/variables.sh          
+            jx updatebot sync --source-env $ENVIRONMENT --target-env $PREVIEW_ENV --charts $APP_NAME  
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
