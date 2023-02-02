@@ -48,7 +48,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx-release-version -debug -next-version=semantic:strip-prerelease -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT-$BUILD_ID > VERSION            
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.45
+        - image: ghcr.io/jenkins-x/jx-boot:3.9.5
           name: jx-variables
           resources: {}
           script: |
@@ -164,7 +164,7 @@ spec:
               --tag v${VERSION} \
               --name "$REPO_NAME-linux-amd64" \
               --file $ARTIFACT-latest
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.45
+        - image: ghcr.io/jenkins-x/jx-boot:3.9.5
           name: promote-helm-release
           resources: {}
           script: |
