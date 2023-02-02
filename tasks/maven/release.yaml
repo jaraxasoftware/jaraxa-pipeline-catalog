@@ -187,18 +187,7 @@ spec:
             #!/usr/bin/env sh
             source .jx/variables.sh
             jx gitops helm release
-        - env:
-          - name: GIT_TOKEN
-            valueFrom:
-              secretKeyRef:
-                key: password
-                name: tekton-git
-          - name: GIT_USER
-            valueFrom:
-              secretKeyRef:
-                key: username
-                name: tekton-git
-          image: ghcr.io/jenkins-x-plugins/jx-promote:0.6.2
+        - image: ghcr.io/jenkins-x-plugins/jx-promote:0.6.2
           name: promote-jx-promote
           resources: {}
           script: |
