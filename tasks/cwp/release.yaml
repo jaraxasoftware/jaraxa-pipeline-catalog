@@ -106,7 +106,7 @@ spec:
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest 
-        - image: ghcr.io/jenkins-x/jx-changelog:0.3.0
+        - image: ghcr.io/jenkins-x/jx-changelog:0.9.5
           name: promote-changelog
           resources: {}
           script: |
