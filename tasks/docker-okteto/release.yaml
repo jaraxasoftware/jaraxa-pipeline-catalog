@@ -66,7 +66,7 @@ spec:
           resources: {}
           script: |
             #!/bin/bash
-            mc alias set myminio https://dkv-pet-minio-kompose.develop.jaraxa.systems minio minio123;
+            mc alias set myminio https://dkv-pet-minio-kompose.predev.jaraxa.systems minio minio123;
             mc mb -p myminio/pet-files;
             mc policy set public myminio/pet-files;
             exit 0;
@@ -76,7 +76,7 @@ spec:
           script: |
             #!/bin/bash
             make $OKTETO_TARGET
-            echo "Visit https://ci-ui-kompose.develop.jaraxa.systems/ to get tests result report"
+            echo "Visit https://ci-ui-kompose.predev.jaraxa.systems/ to get tests result report"
             echo "Login: admin@jaraxa.com / 12345678"
   podTemplate: {}
   serviceAccountName: tekton-bot
