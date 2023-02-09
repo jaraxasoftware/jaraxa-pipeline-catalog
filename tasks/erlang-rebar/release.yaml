@@ -189,13 +189,7 @@ spec:
         - name: release-gpg
           secret:
             optional: true
-            secretName: jenkins-release-gpg      
-        workspaces:
-          - name: source
-            description: |
-              Default Workspace
-            optional: false
-            mountPath: /workspace/source 
+            secretName: jenkins-release-gpg
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
 status: {}
