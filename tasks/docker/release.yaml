@@ -84,7 +84,7 @@ spec:
             else echo no charts; fi
         - image: ghcr.io/jenkins-x/jx-boot:3.10.45
           name: promote-changelog
-          resources: {}
+          resources: {}build-helm-build
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
