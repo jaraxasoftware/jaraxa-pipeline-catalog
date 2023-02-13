@@ -50,6 +50,13 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx gitops variables
+        - image: jnorwood/helm-docs:v1.4.0
+          name: chart-docs
+          resources: {}
+          script: |
+            #!/bin/ash
+            if [ -d "charts/$REPO_NAME" ]; then cd charts/$REPO_NAME
+            helm-docs; else echo no charts; fi            
         - image: ghcr.io/jenkins-x/jx-boot:3.10.45
           name: promote-changelog-uat
           resources: {}
