@@ -102,7 +102,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
-            jx promote -b --env $ENVIRONMENT --timeout 1h --no-poll --add-changelog ../changelog.md
+            jx promote -b --env $ENVIRONMENT --timeout 1h --no-poll
         - name: promote-jx-updatebot-sync
           image: ghcr.io/jenkins-x/jx-updatebot:0.4.1
           resources: {}

@@ -210,7 +210,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
-            jx promote -b --env $ENVIRONMENT --timeout 1h --no-poll --add-changelog ../changelog.md
+            jx promote -b --env $ENVIRONMENT --timeout 1h --no-poll
         volumes:
         - name: maven-settings
           secret:
