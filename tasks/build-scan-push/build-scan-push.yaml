@@ -40,7 +40,7 @@ spec:
       #!/bin/sh
       mkdir -p ~/.cache/trivy/db
       mv /trivydb/* ~/.cache/trivy/db/
-  - image: aquasec/trivy:0.32.1
+  - image: aquasec/trivy:latest
     name: vulnscan
     resources: {}
     script: |
