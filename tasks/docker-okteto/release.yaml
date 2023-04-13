@@ -68,7 +68,7 @@ spec:
           resources: {}
           script: |
             #!/bin/bash
-            mc alias set myminio https://dkv-pet-minio-kompose.${OKTETO_DOMAIN} minio minio123;
+            mc alias set myminio http://$MINIO_SERVICE.$KOMPOSE_NAMESPACE.svc.cluster.local minio minio123;
             mc mb -p myminio/pet-files;
             mc policy set public myminio/pet-files;
             exit 0;
