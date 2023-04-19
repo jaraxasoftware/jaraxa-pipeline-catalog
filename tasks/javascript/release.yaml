@@ -72,7 +72,13 @@ spec:
             jx gitops variables
         - image: node:14-slim
           name: build-npm-install
-          resources: {}
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi            
+            limits:
+              cpu: 1
+              memory: 1Gi
           script: |
             #!/bin/bash
             source .jx/variables.sh
