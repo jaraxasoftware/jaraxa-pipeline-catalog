@@ -171,7 +171,7 @@ spec:
             git push --force origin v$VERSION
 
             jx changelog create --version v${VERSION}
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.45
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.83
           name: promote-helm-release
           resources: {}
           script: |
