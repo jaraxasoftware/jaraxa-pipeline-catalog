@@ -116,14 +116,14 @@ spec:
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
-            jx gitops helm release
+            jx gitops helm release --version $VERSION
         - image: ghcr.io/jenkins-x/jx-boot:3.10.45
           name: promote-step7
           resources: {}
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
-            jx promote -b --env $ENVIRONMENT --timeout 1h --no-poll
+            jx promote -b --env $ENVIRONMENT --timeout 1h --no-poll --version $VERSION
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s

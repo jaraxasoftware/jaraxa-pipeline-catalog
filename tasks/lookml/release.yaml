@@ -73,14 +73,14 @@ spec:
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
-            jx gitops helm release
+            jx gitops helm release --version $VERSION
         - image: ghcr.io/jenkins-x-plugins/jx-promote:0.6.2
           name: promote-jx-promote
           resources: {}
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
-            jx promote -b --env $ENVIRONMENT --timeout 1h --no-poll
+            jx promote -b --env $ENVIRONMENT --timeout 1h --no-poll --version $VERSION
         - name: promote-jx-updatebot-sync
           image: ghcr.io/jenkins-x/jx-updatebot:0.4.1
           resources: {}
