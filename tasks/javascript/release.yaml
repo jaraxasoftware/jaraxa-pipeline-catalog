@@ -171,14 +171,13 @@ spec:
             git push --force origin v$VERSION
 
             jx changelog create --version v${VERSION} --output-markdown ../changelog.md 
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.45
+        - image: ghcr.io/jenkins-x/jx-boot:3.9.5
           name: promote-helm-release
           resources: {}
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
             jx gitops helm release
-            sleep 600000
         - image: ghcr.io/jenkins-x-plugins/jx-promote:0.6.2
           name: promote-jx-promote
           resources: {}
