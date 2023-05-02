@@ -90,7 +90,8 @@ spec:
             #!/bin/bash
             source .jx/variables.sh
             CI=true DISPLAY=:99 npm test
-            npx --yes test-results-reporter publish
+            npm i test-results-reporter --legacy-peer-deps
+            npx test-results-reporter publish
         - image: node:14-slim
           name: build-npm-version
           resources: {}
