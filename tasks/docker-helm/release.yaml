@@ -69,7 +69,6 @@ spec:
               --skip-unused-stages \
               --cache=true \
               --cache-repo=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME \
-              --cache-copy-layers \
               --cleanup \
               --context=/workspace/source \
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
