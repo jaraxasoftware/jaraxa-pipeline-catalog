@@ -50,7 +50,7 @@ spec:
             mkdir /workspace/source/bin
             mv ./doctl /workspace/source/bin/doctl
             chmod +x /workspace/source/bin/doctl
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.45
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: do-ctx
           script: |
             #!/usr/bin/env sh
