@@ -28,7 +28,7 @@ spec:
                 name: npmrc
             workingDir: /workspace/source
           steps:
-            - image: ghcr.io/jenkins-x/jx-boot:3.10.45
+            - image: ghcr.io/jenkins-x/jx-boot:3.10.87
               name: jx-variables
               resources:
                 # set requests for the pod here
@@ -51,10 +51,10 @@ spec:
               script: |
                 #!/bin/sh
                 CI=true DISPLAY=:99 npm test
-            - image: ghcr.io/jenkins-x/jx-registry:0.1.8
+            - image: ghcr.io/jenkins-x/jx-registry:0.1.10
               name: check-registry
               resources: {}
-            - image: gcr.io/kaniko-project/executor:v1.6.0-debug
+            - image: gcr.io/kaniko-project/executor:v1.9.1-debug
               name: build-container-build
               resources: {}
               script: |
