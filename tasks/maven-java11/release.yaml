@@ -46,18 +46,18 @@ spec:
               secretKeyRef:
                 key: username
                 name: tekton-git
-          image: ghcr.io/jenkins-x/jx-release-version:2.6.6
+          image: ghcr.io/jenkins-x/jx-release-version:2.6.10
           name: next-version
           resources: {}
           script: |
             #!/usr/bin/env sh
             jx-release-version --tag --debug > VERSION
-        - image: ghcr.io/jenkins-x/jx-release-version:2.6.6
+        - image: ghcr.io/jenkins-x/jx-release-version:2.6.10
           name: next-version-uat
           script: |
             #!/usr/bin/env sh
             jx-release-version -debug -next-version=semantic:strip-prerelease -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT-$BUILD_ID > VERSION             
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.45
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: jx-variables
           resources:
             # set requests for the pod here
@@ -114,7 +114,7 @@ spec:
               -Dsonar.projectVersion=$VERSION \
               -Dsonar.host.url=$SONAR_URL \
               -Dsonar.login=$SONAR_TOKEN               
-        - image: ghcr.io/jenkins-x/jx-registry:0.1.8
+        - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
         - image: sonarsource/sonar-scanner-cli:4.8.0
@@ -131,7 +131,7 @@ spec:
               -Dsonar.sources=. \
               -Dsonar.projectVersion=$VERSION \
               -Dsonar.host.url=$SONAR_URL           
-        - image: gcr.io/kaniko-project/executor:v1.6.0-debug
+        - image: gcr.io/kaniko-project/executor:v1.9.1-debug
           name: build-container-build
           resources: {}
           script: |
@@ -147,7 +147,7 @@ spec:
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest 
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.45
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: promote-changelog-uat
           resources: {}
           script: |
@@ -159,7 +159,7 @@ spec:
             jx gitops yset -p 'image.repository' -v $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME -f ./charts/$REPO_NAME/values.yaml
             jx gitops yset -p 'image.tag' -v "$VERSION" -f ./charts/$REPO_NAME/values.yaml;
             else echo no charts; fi     
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.45
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: promote-changelog
           resources: {}
           script: |
@@ -186,7 +186,7 @@ spec:
             #!/bin/ash
             if [ -d "charts/$REPO_NAME" ]; then cd charts/$REPO_NAME
             helm-docs; else echo no charts; fi            
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.45
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: promote-helm-release
           resources: {}
           script: |
@@ -204,7 +204,7 @@ spec:
               secretKeyRef:
                 key: username
                 name: tekton-git
-          image: ghcr.io/jenkins-x-plugins/jx-promote:0.6.2
+          image: ghcr.io/jenkins-x-plugins/jx-promote:0.6.5
           name: promote-jx-promote
           resources: {}
           script: |
