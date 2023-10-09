@@ -67,7 +67,7 @@ spec:
           name: test-results-report-git
           resources: {}
           script: |
-            #!/bin/bash
+            #!/usr/bin/env sh
             source .jx/variables.sh
             DATE=$(date "+%Y%m%d")
 
@@ -79,8 +79,7 @@ spec:
             git checkout master docs
             git add docs/
             git commit -am "Update karate tests gh-pages"
-            git push -f
-            git checkout master     
+            git push -f    
         - image: node:18-slim
           name: test-results-report
           resources: {}
