@@ -27,7 +27,7 @@ spec:
           volumeMounts:
           - mountPath: /root/.m2/
             name: maven-settings
-          workingDir: /workspace/source
+          workingCLOUD_CI_PATH: /workspace/source
         steps:
         - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: jx-variables
@@ -62,13 +62,33 @@ spec:
             source .jx/variables.sh
             echo "Starting Karate Testing"
             mvn test compile
-            mvn test -Dkarate.env=$KARATE_ENV -Dtest=$KARATE_SUITE  
+            mvn test -Dkarate.env=$KARATE_ENV -Dtest=$KARATE_SUITE
+        - image: node:18-slim
+          name: test-results-report-git
+          resources: {}
+          script: |
+            #!/bin/bash
+            source .jx/variables.sh
+            DATE=$(date "+%Y%m%d")
+
+            cp -r $CLOUD_CI_PATH/target/cucumber-html-reports/ $CLOUD_CI_PATH/docs/$DATE_$BUILD_NUMBER
+            cd $CLOUD_CI_PATH
+            git add docs/
+            git commit -am "Update karate tests master"
+            git checkout gh-pages
+            git checkout master docs
+            git add docs/
+            git commit -am "Update karate tests gh-pages"
+            git push -f
+            git checkout master     
         - image: node:18-slim
           name: test-results-report
           resources: {}
           script: |
             #!/bin/bash
             source .jx/variables.sh
+            DATE=$(date "+%Y%m%d")
+            
             npm i test-results-reporter
             npx test-results-reporter publish                     
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
