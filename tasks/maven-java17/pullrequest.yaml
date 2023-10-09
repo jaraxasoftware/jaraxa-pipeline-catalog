@@ -27,7 +27,7 @@ spec:
           volumeMounts:
           - mountPath: /root/.m2/
             name: maven-settings
-          workingCLOUD_CI_PATH: /workspace/source
+          workingDir: /workspace/source
         steps:
         - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: jx-variables
@@ -67,7 +67,7 @@ spec:
           name: test-results-report-git
           resources: {}
           script: |
-            #!/usr/bin/env sh
+            #!/bin/bash
             source .jx/variables.sh
             DATE=$(date "+%Y%m%d")
 
@@ -79,7 +79,7 @@ spec:
             git checkout master docs
             git add docs/
             git commit -am "Update karate tests gh-pages"
-            git push -f    
+            git push -f
         - image: node:18-slim
           name: test-results-report
           resources: {}
