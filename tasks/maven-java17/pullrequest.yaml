@@ -63,7 +63,7 @@ spec:
             echo "Starting Karate Testing"
             mvn test compile
             mvn test -Dkarate.env=$KARATE_ENV -Dtest=$KARATE_SUITE
-        - image: node:18-slim
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: test-results-report-git
           resources: {}
           script: |
