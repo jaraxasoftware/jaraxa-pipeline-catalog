@@ -56,7 +56,6 @@ spec:
         - image: maven:3.8.2-openjdk-17
           name: mvn-karate-tests
           resources: {}
-          onError: continue
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
