@@ -71,7 +71,7 @@ spec:
             source .jx/variables.sh
             export DATE=$(date "+%Y%m%d")
 
-            cp -r $CLOUD_CI_PATH/target/cucumber-html-reports/ $CLOUD_CI_PATH/docs/$DATE_$BUILD_NUMBER
+            cp -r $CLOUD_CI_PATH/target/cucumber-html-reports/ $CLOUD_CI_PATH/docs/${DATE}_${BUILD_NUMBER}
             cd $CLOUD_CI_PATH
             git add docs/
             git commit -am "Update karate tests master"
