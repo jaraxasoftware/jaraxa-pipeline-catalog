@@ -62,7 +62,7 @@ spec:
             source .jx/variables.sh
             echo "Starting Karate Testing"
             mvn test compile -q
-            mvn test -q -Dkarate.env=$KARATE_ENV -Dtest=$KARATE_SUITE 
+            mvn test -Dkarate.env=$KARATE_ENV -Dtest=$KARATE_SUITE 
         - image: maven:3.8.2-openjdk-17
           name: test-results-report-git
           resources: {}
