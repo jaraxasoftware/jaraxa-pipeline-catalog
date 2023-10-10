@@ -58,7 +58,7 @@ spec:
           resources: {}
           onError: continue
           script: |
-            #!/usr/bin/env sh
+            #!/bin/bash
             source .jx/variables.sh
             echo "Starting Karate Testing"
             mvn test compile
