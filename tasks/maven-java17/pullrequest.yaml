@@ -69,9 +69,9 @@ spec:
           script: |
             #!/bin/bash
             source .jx/variables.sh
-            DATE=$(date "+%Y%m%d")
+            export DATE=$(date "+%Y%m%d")
 
-            cp -r $CLOUD_CI_PATH/target/cucumber-html-reports/ $CLOUD_CI_PATH/docs/$DATE_$BUILD_NUMBER
+            cp -r $CLOUD_CI_PATH/target/cucumber-html-reports/$CLOUD_CI_PATH/docs/$DATE_$BUILD_NUMBER
             cd $CLOUD_CI_PATH
             git add docs/
             git commit -am "Update karate tests master"
@@ -86,7 +86,7 @@ spec:
           script: |
             #!/bin/bash
             source .jx/variables.sh
-            DATE=$(date "+%Y%m%d")
+            export DATE=$(date "+%Y%m%d")
             
             npm i test-results-reporter
             npx test-results-reporter publish                     
