@@ -43,7 +43,7 @@ spec:
           resources: {}
           script: |
             #!/bin/sh
-            DOCTL_VERSION=1.99.0
+            DOCTL_VERSION=1.100.0
             apk add --no-cache wget
             wget https://github.com/digitalocean/doctl/releases/download/v${DOCTL_VERSION}/doctl-${DOCTL_VERSION}-linux-amd64.tar.gz            
             tar xf ./doctl-${DOCTL_VERSION}-linux-amd64.tar.gz
@@ -55,7 +55,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             echo "Saving context $CLUSTER_NAME"
-            /workspace/source/bin/doctl kubernetes cluster kubeconfig save $CLUSTER_ID
+            /workspace/source/bin/doctl kubernetes cluster kubeconfig save $CLUSTER_ID --verbose --trace
         - image: ghcr.io/jaraxasoftware/kubectx:latest
           name: ctx-change
           script: |
