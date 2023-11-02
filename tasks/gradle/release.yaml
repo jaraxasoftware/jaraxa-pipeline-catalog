@@ -21,6 +21,9 @@ spec:
           name: ""
           resources:
             limits: {}
+          volumeMounts:
+          - mountPath: /tekton/home/gradle/.gradle/
+            name: gradle            
           workingDir: /workspace/source
         steps:
         - env:
@@ -40,6 +43,16 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx-release-version --tag --debug > VERSION
+        - image: ghcr.io/jenkins-x/jx-release-version:2.6.10
+          name: next-version-uat
+          script: |
+            #!/usr/bin/env sh
+            jx-release-version -debug -next-version=semantic:strip-prerelease -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-SNAPSHOT > VERSION            
+        - image: ghcr.io/jenkins-x/jx-release-version:2.6.10
+          name: next-version-gradle
+          script: |
+            #!/usr/bin/env sh
+            jx-release-version -debug -next-version=from-file:app/gradle.build > VERSION
         - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: jx-variables
           resources:
@@ -55,7 +68,7 @@ spec:
           resources: {}
           script: |
             #!/bin/sh
-            gradle clean build
+            gradle clean build $BUILD_OPTS
         - image: ghcr.io/jaraxasoftware/pet-component-android:builder-20231031
           name: android-gradle-build
           resources: {}
@@ -129,6 +142,11 @@ spec:
             #!/usr/bin/env sh
             source .jx/variables.sh          
             jx updatebot sync --source-env $ENVIRONMENT --target-env $PREVIEW_ENV --charts $APP_NAME  
+        volumes:
+        - name: gradle
+          secret:
+            optional: true
+            secretName: gradle-nexus
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
