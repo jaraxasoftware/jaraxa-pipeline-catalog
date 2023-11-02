@@ -147,6 +147,12 @@ spec:
           secret:
             optional: true
             secretName: gradle-nexus
+        workspaces:
+          - name: source
+            description: |
+              Default Workspace
+            optional: false
+            mountPath: /workspace/source            
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
