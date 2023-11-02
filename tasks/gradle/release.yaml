@@ -22,7 +22,7 @@ spec:
           resources:
             limits: {}
           volumeMounts:
-          - mountPath: /tekton/home/gradle/.gradle/
+          - mountPath: /home/gradle/.gradle/
             name: gradle            
           workingDir: /workspace/source
         steps:
