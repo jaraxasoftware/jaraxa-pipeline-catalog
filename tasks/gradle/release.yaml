@@ -22,8 +22,9 @@ spec:
           resources:
             limits: {}
           volumeMounts:
-          - mountPath: /home/gradle/.gradle/
-            name: gradle            
+          - mountPath: /home/gradle/.gradle/gradle.properties
+            subPath: gradle.properties
+            name: gradle     
           workingDir: /workspace/source
         steps:
         - env:
