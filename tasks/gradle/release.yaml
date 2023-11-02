@@ -52,7 +52,7 @@ spec:
           name: next-version-gradle
           script: |
             #!/usr/bin/env sh
-            jx-release-version -debug -next-version=from-file:app/gradle.build > VERSION
+            jx-release-version -debug -next-version=from-file:app/build.gradle > VERSION
         - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: jx-variables
           resources:
