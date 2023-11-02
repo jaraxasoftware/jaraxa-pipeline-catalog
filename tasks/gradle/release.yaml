@@ -56,6 +56,18 @@ spec:
           script: |
             #!/bin/sh
             gradle clean build
+        - image: ghcr.io/jaraxasoftware/pet-component-android:builder-20231031
+          name: android-gradle-build
+          resources: {}
+          script: |
+            #!/bin/sh
+            gradle clean build   
+        - image: ghcr.io/jaraxasoftware/pet-component-android:builder-20231031
+          name: android-gradle-publish
+          resources: {}
+          script: |
+            #!/bin/sh
+            gradle publish               
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
