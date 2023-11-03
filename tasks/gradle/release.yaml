@@ -45,15 +45,15 @@ spec:
             #!/usr/bin/env sh
             jx-release-version --tag --debug > VERSION
         - image: ghcr.io/jenkins-x/jx-release-version:2.7.0
-          name: next-version-uat
+          name: next-version-gradle-uat
           script: |
             #!/usr/bin/env sh
-            jx-release-version -debug -next-version=semantic:strip-prerelease -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-SNAPSHOT > VERSION            
+            jx-release-version -debug -next-version=from-file:app/build.gradle -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-SNAPSHOT > VERSION            
         - image: ghcr.io/jenkins-x/jx-release-version:2.7.0
           name: next-version-gradle
           script: |
             #!/usr/bin/env sh
-            jx-release-version -debug -next-version=from-file:app/build.gradle > VERSION
+            jx-release-version -debug -next-version=from-file:app/build.gradle  > VERSION
         - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: jx-variables
           resources:
