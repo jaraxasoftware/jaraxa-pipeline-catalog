@@ -23,9 +23,7 @@ spec:
             name: ''
             resources:
               limits: {}
-            volumeMounts:
-              - mountPath: /tekton/home/npm
-                name: npmrc
+            volumeMounts: []
             workingDir: /workspace/source
           steps:
             - env:
