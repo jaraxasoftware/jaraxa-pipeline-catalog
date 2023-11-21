@@ -48,7 +48,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx-release-version -debug -next-version=semantic:strip-prerelease -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT-$BUILD_ID > VERSION            
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: jx-variables
           resources: {}
           script: |
@@ -118,7 +118,7 @@ spec:
             #!/bin/ash
             if [ -d "charts/$REPO_NAME" ]; then cd charts/$REPO_NAME
             helm-docs; else echo no charts; fi                         
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: promote-changelog-uat
           resources: {}
           script: |
@@ -130,7 +130,7 @@ spec:
             jx gitops yset -p 'image.repository' -v $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME -f ./charts/$REPO_NAME/values.yaml
             jx gitops yset -p 'image.tag' -v "$VERSION" -f ./charts/$REPO_NAME/values.yaml;
             else echo no charts; fi   
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: promote-changelog
           resources: {}
           script: |
@@ -171,7 +171,7 @@ spec:
               --tag v${VERSION} \
               --name "$REPO_NAME-linux-amd64" \
               --file $ARTIFACT-latest
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: promote-helm-release
           resources: {}
           script: |
