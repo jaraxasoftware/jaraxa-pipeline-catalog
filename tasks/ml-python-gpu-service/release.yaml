@@ -40,7 +40,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx-release-version --tag --debug > VERSION
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: jx-variables
           resources:
             # set requests for the pod here
@@ -85,7 +85,7 @@ spec:
               --context=/workspace/source \
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: promote-changelog-uat
           resources: {}
           script: |
@@ -105,7 +105,7 @@ spec:
             git push --force origin v$VERSION
 
             jx changelog create --draft --version v${VERSION}
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: promote-changelog
           resources: {}
           script: |
@@ -132,7 +132,7 @@ spec:
             #!/bin/ash
             if [ -d "charts/$REPO_NAME" ]; then cd charts/$REPO_NAME
             helm-docs; else echo no charts; fi             
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
           name: promote-helm-release
           resources: {}
           script: |
