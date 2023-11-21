@@ -45,7 +45,7 @@ spec:
     resources: {}
     script: |
       trivy image --input /workspace/source/image.tar > /workspace/source/scanresults.txt
-  - image: ghcr.io/jenkins-x/jx-boot:3.10.87
+  - image: ghcr.io/jenkins-x/jx-boot:3.10.124
     name: analyze-critical
     resources: {}
     script: |
@@ -59,7 +59,7 @@ spec:
       else
       echo "No vulnerabilities found."
       fi
-  - image: ghcr.io/jenkins-x/jx-boot:3.10.87
+  - image: ghcr.io/jenkins-x/jx-boot:3.10.124
     name: analyze
     resources: {}
     script: |
