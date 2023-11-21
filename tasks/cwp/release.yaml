@@ -48,7 +48,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx-release-version --tag --debug > VERSION
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: jx-variables
           resources:
             # set requests for the pod here
@@ -106,7 +106,7 @@ spec:
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest 
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: promote-changelog
           resources: {}
           script: |
@@ -126,14 +126,14 @@ spec:
             git push --force origin v$VERSION
 
             jx changelog create --version v${VERSION} --output-markdown ../changelog.md
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: promote-step6
           resources: {}
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
             jx gitops helm release --version $VERSION
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.87
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: promote-jx
           resources: {}
           script: |
