@@ -36,13 +36,13 @@ spec:
             #!/usr/bin/env sh
             jx gitops variables
             jx gitops pr variables
-        - image: node:14-slim
+        - image: node:18-slim
           name: build-npm-install
           resources: {}
           script: |
             #!/bin/sh
             npm install
-        - image: node:14-slim
+        - image: node:18-slim
           name: build-npm-test
           resources: {}
           script: |
@@ -66,6 +66,11 @@ spec:
             #!/usr/bin/env sh
             source .jx/variables.sh
             jx preview create
+        volumes:
+        - name: npmrc
+          secret:
+            optional: true
+            secretName: npmrc            
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
