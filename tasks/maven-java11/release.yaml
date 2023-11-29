@@ -117,7 +117,7 @@ spec:
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
-        - image: sonarsource/sonar-scanner-cli:4.8.0
+        - image: sonarsource/sonar-scanner-cli:latest
           name: sonar-code-analisys
           resources: {}
           script: |
