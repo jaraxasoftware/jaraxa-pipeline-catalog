@@ -40,7 +40,7 @@ spec:
           script: |
             #!/bin/sh
             jx gitops helm build
-        - image: ghcr.io/jenkins-x-plugins/jx-preview:0.0.222
+        - image: ghcr.io/jenkins-x-plugins/jx-preview:0.4.7
           name: promote-jx-preview
           resources: {}
           script: |
