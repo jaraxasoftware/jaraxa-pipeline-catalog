@@ -48,6 +48,20 @@ spec:
           script: |
             #!/bin/sh
             CI=true DISPLAY=:99 npm test
+        - image: sonarsource/sonar-scanner-cli:latest
+          name: sonar-code-analisys
+          resources: {}
+          script: |
+            #!/bin/bash
+            source .jx/variables.sh
+            export SONAR_TOKEN=$SONAR_TOKEN
+            sonar-scanner \
+              -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+              -Dsonar.exclusions=$SONAR_EXCLUSIONS \
+              -Dsonar.sourceEncoding=UTF-8 \
+              -Dsonar.sources=. \
+              -Dsonar.projectVersion=$VERSION \
+              -Dsonar.host.url=$SONAR_URL            
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
