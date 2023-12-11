@@ -49,7 +49,7 @@ spec:
       #!/usr/bin/env sh
       set +x
       counter=0
-      until [ "$counter" -eq 15 ]; do
+      until [ "$counter" -eq 5 ]; do
         # lets avoid git rebase/merge conflicts on promotions
         jx gitops git merge --rebase --merge-arg "-Xtheirs" && exit 0
         counter=$((counter+1))
