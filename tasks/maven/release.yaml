@@ -160,6 +160,11 @@ spec:
             jx gitops yset -p 'image.repository' -v $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME -f ./charts/$REPO_NAME/values.yaml
             jx gitops yset -p 'image.tag' -v "$VERSION" -f ./charts/$REPO_NAME/values.yaml;
             else echo no charts; fi
+
+            git add * || true
+            git commit -a -m "chore: release $VERSION" --allow-empty
+            git tag -fa v$VERSION -m "Pre-release version $VERSION"
+            git push --force origin v$VERSION            
         - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: promote-changelog
           resources: {}
