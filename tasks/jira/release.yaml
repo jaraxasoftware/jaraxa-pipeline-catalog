@@ -28,16 +28,23 @@ spec:
       #!/bin/sh
       export LC_ALL=en_US.utf8
       git log $(git describe --abbrev=0 --tags 2> /dev/null || git rev-list --max-parents=0 HEAD)..HEAD | \
-        grep -oE "${JIRA_PROJECT}-[[:digit:]]{1,}" | sort | uniq | \
-        sed 's/^\|$/"/g' | paste -sd , - | awk '{print "RELATED_JIRA_ISSUES="$0}' >> $GITHUB_ENV
-  - image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.27.0
+        grep -oE "$JIRA_PROJECT-[[:digit:]]{1,}" | sort | uniq | \
+        sed 's/^\|$/"/g' | paste -sd , - | awk '{print ""$0}' | export RELATED_JIRA_ISSUES
+  - image: docker.io/curlimages/curl:7.72.0
     name: invoke-jira-webhook
     resources: {}
     script: |
       #!/bin/sh
-      $json = ConvertTo-Json @{issues = @(${{ env.RELATED_JIRA_ISSUES }}); data = @{version = "${{ inputs.build-version }}"; projectName = "${{ inputs.jira-project-key }}"}}
-      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-      Invoke-RestMethod ${{ inputs.jira-automation-webhook }} -Method Post -Body $json -ContentType "application/json"      
+        curl -XPOST -H "Content-Type: application/json" -d '{
+          "data": {
+            "version": "$VERSION",
+            "projectname": "$JIRA_PROJECT"
+          },
+          "issues": [
+            $RELATED_JIRA_ISSUES
+          ]
+        }'
+        $JIRA_WEBHOOK_URL
     workingDir: /workspace
   workspaces:
   - description: The git repo will be cloned onto the volume backing this workspace
