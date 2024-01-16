@@ -26,12 +26,9 @@ spec:
     resources: {}
     script: |
       #!/bin/sh
-      export LC_ALL=en_US.utf8
-      export RELATED_JIRA_ISSUES="$(      
       git log $(git describe --abbrev=0 --tags 2> /dev/null || git rev-list --max-parents=0 HEAD)..HEAD | \
         grep -oE "$JIRA_PROJECT-[[:digit:]]{1,}" | sort | uniq | \
-        sed 's/^\|$/"/g' | paste -sd , - | awk '{print ""$0}'      
-      )"
+        sed 's/^\|$/"/g' | paste -sd , - | awk '{print ""$0}' >> $RELATED_JIRA_ISSUES
       echo JIRA Tickets are: $RELATED_JIRA_ISSUES
   - envFrom:
     - secretRef:
