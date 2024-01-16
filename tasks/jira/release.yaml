@@ -32,6 +32,7 @@ spec:
         grep -oE "$JIRA_PROJECT-[[:digit:]]{1,}" | sort | uniq | \
         sed 's/^\|$/"/g' | paste -sd , - | awk '{print ""$0}'      
       )"
+      echo JIRA Tickets are: $RELATED_JIRA_ISSUES
   - envFrom:
     - secretRef:
         name: jx-boot-job-env-vars
@@ -41,7 +42,7 @@ spec:
     resources: {}
     script: |
       #!/bin/sh
-      curl -s -XPOST -H "Content-Type: application/json" -d '{"data": {"version": "$VERSION","projectname": "$JIRA_PROJECT"}, "issues": ["$RELATED_JIRA_ISSUES"]}' $JIRA_WEBHOOK_URL
+      curl -s -XPOST -H "Content-Type: application/json" -d '{"data": {"version": "$VERSION","projectname": "$JIRA_PROJECT"}, "issues": [$RELATED_JIRA_ISSUES]}' $JIRA_WEBHOOK_URL
   workspaces:
   - description: The git repo will be cloned onto the volume backing this workspace
     mountPath: /workspace
