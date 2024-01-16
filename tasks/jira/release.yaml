@@ -19,13 +19,13 @@ spec:
     name: git-history
     resources: {}
     script: |
-      #!/bin/bash
+      #!/bin/sh
       git fetch --prune --tags
   - image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.27.0
     name: collect-issues
     resources: {}
     script: |
-      #!/bin/bash
+      #!/bin/sh
       export LC_ALL=en_US.utf8
       export RELATED_JIRA_ISSUES="$(      
       git log $(git describe --abbrev=0 --tags 2> /dev/null || git rev-list --max-parents=0 HEAD)..HEAD | \
