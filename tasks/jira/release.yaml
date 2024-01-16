@@ -19,27 +19,29 @@ spec:
     name: git-history
     resources: {}
     script: |
-      #!/bin/sh
+      #!/bin/bash
       git fetch --prune --tags
   - image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.27.0
     name: collect-issues
     resources: {}
     script: |
-      #!/bin/sh
+      #!/bin/bash
       export LC_ALL=en_US.utf8
+      export RELATED_JIRA_ISSUES="$(      
       git log $(git describe --abbrev=0 --tags 2> /dev/null || git rev-list --max-parents=0 HEAD)..HEAD | \
         grep -oE "$JIRA_PROJECT-[[:digit:]]{1,}" | sort | uniq | \
-        sed 's/^\|$/"/g' | paste -sd , - | awk '{print ""$0}' | export RELATED_JIRA_ISSUES
+        sed 's/^\|$/"/g' | paste -sd , - | awk '{print ""$0}'      
+      )"
   - envFrom:
     - secretRef:
         name: jx-boot-job-env-vars
         optional: true
-    image: docker.io/curlimages/curl:7.72.0
+    image: curlimages/curl:7.72.0
     name: invoke-jira-webhook
     resources: {}
     script: |
-      #!/bin/sh
-      curl -s -XPOST -H "Content-Type: application/json" -d '{"data": {"version": "$VERSION","projectname": "$JIRA_PROJECT"}, "issues": ["${RELATED_JIRA_ISSUES}"]}' $JIRA_WEBHOOK_URL
+      #!/bin/bash
+      curl -s -XPOST -H "Content-Type: application/json" -d '{"data": {"version": "$VERSION","projectname": "$JIRA_PROJECT"}, "issues": ["$RELATED_JIRA_ISSUES"]}' $JIRA_WEBHOOK_URL
   workspaces:
   - description: The git repo will be cloned onto the volume backing this workspace
     mountPath: /workspace
