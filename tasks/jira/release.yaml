@@ -17,6 +17,12 @@ spec:
     workingDir: /workspace/source    
   steps:
   - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+    name: jx-variables
+    resources: {}
+    script: |
+      #!/usr/bin/env sh
+      jx gitops variables  
+  - image: ghcr.io/jenkins-x/jx-boot:3.10.124
     name: git-history
     resources: {}
     script: |
@@ -41,8 +47,7 @@ spec:
       #!/bin/sh -x
       export RELATED_JIRA_ISSUES=$(cat ./JIRA_ISSUES)
       echo JIRA Tickets are: $RELATED_JIRA_ISSUES
-      curl -s -XPOST -H "Content-Type: application/json" -d '{"data": {"version": "$VERSION","projectname": "$JIRA_PROJECT"}, "issues": [$RELATED_JIRA_ISSUES]}' $JIRA_WEBHOOK_URL
-      sleep 6000
+      curl -XPOST -H "Content-Type: application/json" -d '{"data": {"version": "'"$VERSION"'","projectname": "'"$JIRA_PROJECT"'"}, "issues": ['"$RELATED_JIRA_ISSUES"']}' $JIRA_WEBHOOK_URL
   workspaces:
   - description: The git repo will be cloned onto the volume backing this workspace
     mountPath: /workspace/source
