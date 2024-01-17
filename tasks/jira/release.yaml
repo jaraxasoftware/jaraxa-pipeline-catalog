@@ -35,7 +35,7 @@ spec:
     script: |
       #!/usr/bin/env sh 
       set -x
-      git log $(git describe --abbrev=0 --tags 2> /dev/null || git rev-list --max-parents=0 HEAD) | \
+      git log --oneline --shortstat $(git describe --abbrev=0 --tags $(git rev-list --tags --skip=2 -n 1))..$(git describe --tags `git rev-list --tags --max-count=1`) | \
         grep -oE "$JIRA_PROJECT-[[:digit:]]{1,}" | sort | uniq | \
         paste -sd , - | awk '{print "\"" $0 "\""}' > JIRA_ISSUES
   - image: ghcr.io/jenkins-x/jx-boot:3.10.124
