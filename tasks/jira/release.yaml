@@ -27,11 +27,10 @@ spec:
     resources: {}
     script: |
       #!/usr/bin/env sh 
-      git log $(git describe --abbrev=0 --tags 2> /dev/null || git rev-list --max-parents=0 HEAD)..HEAD | \
+      RELATED_JIRA_ISSUES=$(git log $(git describe --abbrev=0 --tags 2> /dev/null || git rev-list --max-parents=0 HEAD) | \
         grep -oE "$JIRA_PROJECT-[[:digit:]]{1,}" | sort | uniq | \
-        sed 's/^\|$/"/g' | paste -sd , - | awk '{print ""$0}' >> $RELATED_JIRA_ISSUES
+        paste -sd , - | awk '{print "\"" $0 "\""}')
       echo JIRA Tickets are: $RELATED_JIRA_ISSUES
-      sleep 6000
   - envFrom:
     - secretRef:
         name: jx-boot-job-env-vars
