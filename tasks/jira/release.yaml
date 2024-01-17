@@ -47,7 +47,7 @@ spec:
       #!/bin/sh -x
       export RELATED_JIRA_ISSUES=$(cat ./JIRA_ISSUES)
       echo JIRA Tickets are: $RELATED_JIRA_ISSUES
-      curl -XPOST -H "Content-Type: application/json" -d '{"data": {"version": "'"$VERSION"'","projectname": "'"$JIRA_PROJECT"'"}, "issues": ['"$RELATED_JIRA_ISSUES"']}' $JIRA_WEBHOOK_URL
+      curl -XPOST -H "Content-Type: application/json" -d '{"data": {"version": "'"$APP_NAME - $VERSION"'","projectname": "'"$JIRA_PROJECT"'"}, "issues": ['"$RELATED_JIRA_ISSUES"']}' $JIRA_WEBHOOK_URL
   workspaces:
   - description: The git repo will be cloned onto the volume backing this workspace
     mountPath: /workspace/source
