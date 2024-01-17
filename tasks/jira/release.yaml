@@ -26,13 +26,15 @@ spec:
     name: git-history
     resources: {}
     script: |
-      #!/usr/bin/env sh -x
+      #!/usr/bin/env sh 
+      set -x
       git fetch --prune --tags --force  
   - image: ghcr.io/jenkins-x/jx-boot:3.10.124
     name: collect-issues
     resources: {}
     script: |
-      #!/usr/bin/env sh -x
+      #!/usr/bin/env sh 
+      set -x
       git log $(git describe --abbrev=0 --tags 2> /dev/null || git rev-list --max-parents=0 HEAD) | \
         grep -oE "$JIRA_PROJECT-[[:digit:]]{1,}" | sort | uniq | \
         paste -sd , - | awk '{print "\"" $0 "\""}' > JIRA_ISSUES
@@ -44,7 +46,8 @@ spec:
     name: invoke-jira-webhook
     resources: {}
     script: |
-      #!/bin/sh -x
+      #!/bin/sh 
+      set -x
       export RELATED_JIRA_ISSUES=$(cat ./JIRA_ISSUES)
       echo JIRA Tickets are: $RELATED_JIRA_ISSUES
       curl -XPOST -H "Content-Type: application/json" -d '{"data": {"version": "'"$APP_NAME - $VERSION"'","projectname": "'"$JIRA_PROJECT"'"}, "issues": ['"$RELATED_JIRA_ISSUES"']}' $JIRA_WEBHOOK_URL
