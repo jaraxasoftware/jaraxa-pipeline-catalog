@@ -31,6 +31,7 @@ spec:
         grep -oE "$JIRA_PROJECT-[[:digit:]]{1,}" | sort | uniq | \
         sed 's/^\|$/"/g' | paste -sd , - | awk '{print ""$0}' >> $RELATED_JIRA_ISSUES
       echo JIRA Tickets are: $RELATED_JIRA_ISSUES
+      sleep 6000
   - envFrom:
     - secretRef:
         name: jx-boot-job-env-vars
