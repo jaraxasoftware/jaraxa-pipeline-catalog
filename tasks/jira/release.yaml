@@ -16,17 +16,17 @@ spec:
     resources: {}
     workingDir: /workspace/source    
   steps:
-  - image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.27.0
+  - image: ghcr.io/jenkins-x/jx-boot:3.10.124
     name: git-history
     resources: {}
     script: |
-      #!/bin/sh
+      #!/usr/bin/env sh 
       git fetch --prune --tags
-  - image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.27.0
+  - image: ghcr.io/jenkins-x/jx-boot:3.10.124
     name: collect-issues
     resources: {}
     script: |
-      #!/bin/sh
+      #!/usr/bin/env sh 
       git log $(git describe --abbrev=0 --tags 2> /dev/null || git rev-list --max-parents=0 HEAD)..HEAD | \
         grep -oE "$JIRA_PROJECT-[[:digit:]]{1,}" | sort | uniq | \
         sed 's/^\|$/"/g' | paste -sd , - | awk '{print ""$0}' >> $RELATED_JIRA_ISSUES
