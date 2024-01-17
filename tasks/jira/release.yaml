@@ -46,7 +46,8 @@ spec:
     name: invoke-jira-webhook
     resources: {}
     script: |
-      #!/bin/sh 
+      #!/bin/sh
+      source .jx/variables.sh
       set -x
       export RELATED_JIRA_ISSUES=$(cat ./JIRA_ISSUES)
       echo JIRA Tickets are: $RELATED_JIRA_ISSUES
