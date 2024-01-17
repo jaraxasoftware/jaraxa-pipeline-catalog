@@ -21,7 +21,7 @@ spec:
     resources: {}
     script: |
       #!/usr/bin/env sh 
-      git fetch --prune --tags
+      git fetch --prune --tags --force  
   - image: ghcr.io/jenkins-x/jx-boot:3.10.124
     name: collect-issues
     resources: {}
