@@ -29,12 +29,20 @@ spec:
       #!/usr/bin/env sh 
       set -x
       git fetch --prune --tags --force  
-  - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+  - env:
+    - name: GITHUB_TOKEN
+      valueFrom:
+        secretKeyRef:
+          key: oauth
+          name: lighthouse-oauth-token
+    image: ghcr.io/jenkins-x/jx-boot:3.10.124
     name: collect-issues
     resources: {}
     script: |
-      #!/usr/bin/env sh 
+      #!/usr/bin/env sh
+      source .jx/variables.sh
       set -x
+      apk add github-cli
       gh release view v$VERSION | \
         grep -oE "$JIRA_PROJECT-[[:digit:]]{1,}" | sort | uniq | \
         paste -sd , - | awk '{print "\"" $0 "\""}' > JIRA_ISSUES
