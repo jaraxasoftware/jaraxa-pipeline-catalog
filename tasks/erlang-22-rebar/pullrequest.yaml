@@ -1,0 +1,78 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  creationTimestamp: null
+  name: pullrequest
+spec:
+  pipelineSpec:
+    tasks:
+    - name: from-build-pack
+      resources: {}
+      taskSpec:
+        metadata: {}
+        stepTemplate:
+          env:
+          - name: HOME
+            value: /tekton/home
+          envFrom:
+          - secretRef:
+              name: jx-boot-job-env-vars
+              optional: true
+          name: ""
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+          workingDir: /workspace/source
+        steps:
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+          name: jx-variables
+          resources: {}
+          script: |
+            #!/usr/bin/env sh
+            jx gitops variables
+            jx gitops pr variables
+        - image: erlang:22.3.4.26
+          name: check-erlang
+          resources: {}
+          script: |
+            #!/usr/bin/env bash
+            source .jx/variables.sh
+            echo "Erlang/Rebar3 versions are:"
+            rebar3 version
+        - image: erlang:22.3.4.26
+          name: build-erlang-develop
+          resources: {}
+          script: |
+            #!/bin/bash
+            source .jx/variables.sh
+            git config --global url."https://".insteadOf git://
+            rebar3 release --relname $APP_NAME --output-dir ./            
+        - image: ghcr.io/jenkins-x/jx-registry:0.1.1
+          name: check-registry
+          resources: {}
+        - image: ghcr.io/hadolint/hadolint:latest-debian
+          name: check-dockerfile
+          resources: {}
+          script: |
+            #!/usr/bin/env bash
+            source .jx/variables.sh
+            hadolint --no-fail Dockerfile
+        - image: gcr.io/kaniko-project/executor:v1.9.1-debug
+          name: build-container-build
+          resources: {}
+          script: |
+            #!/busybox/sh
+            source .jx/variables.sh
+            cp /tekton/creds-secrets/tekton-container-registry-auth/.dockerconfigjson /kaniko/.docker/config.json
+            /kaniko/executor $KANIKO_FLAGS --context=/workspace/source --dockerfile=${DOCKERFILE_PATH:-Dockerfile} --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION            
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+          name: build-helm-build
+          resources: {}
+          script: |
+            #!/bin/sh
+            jx gitops helm build
+  podTemplate: {}
+  serviceAccountName: tekton-bot
+  timeout: 12h0m0s
+status: {}
