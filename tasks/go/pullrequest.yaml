@@ -35,11 +35,11 @@ spec:
             jx gitops variables
             jx gitops pr variables
         - image: golang:1.18.4
-          name: build-make-linux
+          name: build-make-build
           resources: {}
           script: |
             #!/bin/sh
-            make linux
+            make build
         - image: golangci/golangci-lint:v1.46.2-alpine
           name: make-lint
           resources: {}
