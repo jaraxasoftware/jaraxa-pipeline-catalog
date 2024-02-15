@@ -33,10 +33,7 @@ spec:
               optional: true
           image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: make-pr
-          resources:
-            requests:
-              cpu: 400m
-              memory: 512Mi
+          resources: {}
         - image: uses:jaraxasoftware/jaraxa-pipeline-catalog/tasks/kubetest/environment.yaml@versionStream
           name: ""
           resources: {}
