@@ -62,7 +62,7 @@ spec:
             source .jx/variables.sh
             echo "Starting Karate Testing"
             mvn test compile -q
-            mvn test -Dspring.profiles.active=$KARATE_PROFILE -Dkarate.env=$KARATE_ENV -Dtest=$KARATE_SUITE -Dsurefire.failIfNoSpecifiedTests=false
+            mvn test -Dspring.profiles.active=$KARATE_PROFILE -Dkarate.env=$KARATE_ENV -Dtest=$KARATE_SUITE "-Dkarate.options=--tags ~@init" -Dsurefire.failIfNoSpecifiedTests=false
         - image: maven:3.8.2-openjdk-17
           name: test-results-report-git
           resources: {}
