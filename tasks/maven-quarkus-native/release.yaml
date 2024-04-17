@@ -92,7 +92,7 @@ spec:
               --context=/workspace/source \
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION \
-              --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest 
+              --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest
         - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: promote-changelog-uat
           resources: {}
@@ -139,7 +139,7 @@ spec:
           script: |
             #!/bin/ash
             if [ -d "charts/$REPO_NAME" ]; then cd charts/$REPO_NAME
-            helm-docs; else echo no charts; fi             
+            helm-docs; else echo no charts; fi
         - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: promote-helm-release
           resources: {}
@@ -159,8 +159,8 @@ spec:
           resources: {}
           script: |
             #!/usr/bin/env sh
-            source .jx/variables.sh          
-            jx updatebot sync --source-env $ENVIRONMENT --target-env $PREVIEW_ENV --charts $APP_NAME  
+            source .jx/variables.sh
+            jx updatebot sync --source-env $ENVIRONMENT --target-env $PREVIEW_ENV --charts $APP_NAME
         volumes:
         - name: maven-settings
           secret:

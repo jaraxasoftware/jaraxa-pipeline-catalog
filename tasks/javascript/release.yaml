@@ -59,7 +59,7 @@ spec:
           name: next-version-package-json-uat
           script: |
             #!/usr/bin/env sh
-            jx-release-version -debug -next-version=from-file:package.json -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT-$BUILD_ID > VERSION                           
+            jx-release-version -debug -next-version=from-file:package.json -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT-$BUILD_ID > VERSION
         - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: jx-variables
           resources:
@@ -75,7 +75,7 @@ spec:
           resources:
             requests:
               cpu: 400m
-              memory: 512Mi            
+              memory: 512Mi
             limits:
               cpu: 2
               memory: 3000Mi
@@ -117,7 +117,7 @@ spec:
               -Dsonar.sourceEncoding=UTF-8 \
               -Dsonar.sources=. \
               -Dsonar.projectVersion=$VERSION \
-              -Dsonar.host.url=$SONAR_URL            
+              -Dsonar.host.url=$SONAR_URL
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
@@ -144,12 +144,12 @@ spec:
           script: |
             #!/bin/ash
             if [ -d "charts/$REPO_NAME" ]; then cd charts/$REPO_NAME
-            helm-docs; else echo no charts; fi              
+            helm-docs; else echo no charts; fi
         - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: promote-changelog-uat
           resources: {}
           script: |
-            #!/usr/bin/env sh    
+            #!/usr/bin/env sh
             source .jx/variables.sh
             if [ -d "charts/$REPO_NAME" ]; then
             jx gitops yset -p version -v "$VERSION" -f ./charts/$REPO_NAME/Chart.yaml
@@ -181,14 +181,14 @@ spec:
             git tag -fa v$VERSION -m "Release version $VERSION"
             git push --force origin v$VERSION
 
-            jx changelog create --version v${VERSION} --output-markdown ../changelog.md 
+            jx changelog create --version v${VERSION} --output-markdown ../changelog.md
         - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: promote-helm-release
           resources: {}
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
-            jx gitops helm release --version $VERSION  
+            jx gitops helm release --version $VERSION
         - image: ghcr.io/jenkins-x-plugins/jx-promote:0.6.5
           name: promote-jx-promote
           resources: {}
@@ -201,8 +201,8 @@ spec:
           resources: {}
           script: |
             #!/usr/bin/env sh
-            source .jx/variables.sh          
-            jx updatebot sync --source-env $ENVIRONMENT --target-env $PREVIEW_ENV --charts $APP_NAME  
+            source .jx/variables.sh
+            jx updatebot sync --source-env $ENVIRONMENT --target-env $PREVIEW_ENV --charts $APP_NAME
         volumes:
         - name: npmrc
           secret:
@@ -213,7 +213,7 @@ spec:
             description: |
               Default Workspace
             optional: false
-            mountPath: /workspace/source            
+            mountPath: /workspace/source
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s

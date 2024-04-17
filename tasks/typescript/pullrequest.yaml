@@ -61,7 +61,7 @@ spec:
               -Dsonar.sourceEncoding=UTF-8 \
               -Dsonar.sources=. \
               -Dsonar.projectVersion=$VERSION \
-              -Dsonar.host.url=$SONAR_URL            
+              -Dsonar.host.url=$SONAR_URL
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
@@ -84,7 +84,7 @@ spec:
         - name: npmrc
           secret:
             optional: true
-            secretName: npmrc            
+            secretName: npmrc
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s

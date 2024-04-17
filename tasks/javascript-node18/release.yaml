@@ -147,7 +147,7 @@ spec:
               name: promote-changelog-uat
               resources: {}
               script: |
-                #!/usr/bin/env sh    
+                #!/usr/bin/env sh
                 source .jx/variables.sh
                 if [ -d "charts/$REPO_NAME" ]; then
                 jx gitops yset -p version -v "$VERSION" -f ./charts/$REPO_NAME/Chart.yaml
@@ -199,7 +199,7 @@ spec:
               resources: {}
               script: |
                 #!/usr/bin/env sh
-                source .jx/variables.sh          
+                source .jx/variables.sh
                 jx updatebot sync --source-env $ENVIRONMENT --target-env $PREVIEW_ENV --charts $APP_NAME
           volumes:
             - name: npmrc

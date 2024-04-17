@@ -39,9 +39,9 @@ spec:
             #!/usr/bin/env bash
             source .jx/variables.sh
             echo "Running cabal update to ensure you're on latest dependencies..."
-            cabal update 
+            cabal update
             echo "Cabal version is:"
-            cabal --version 
+            cabal --version
         - image: ghcr.io/jenkins-x/jx-registry:0.1.1
           name: check-registry
           resources: {}

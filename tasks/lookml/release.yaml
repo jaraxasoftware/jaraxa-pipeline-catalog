@@ -86,8 +86,8 @@ spec:
           resources: {}
           script: |
             #!/usr/bin/env sh
-            source .jx/variables.sh          
-            jx updatebot sync --source-env $ENVIRONMENT --target-env $PREVIEW_ENV --charts $APP_NAME  
+            source .jx/variables.sh
+            jx updatebot sync --source-env $ENVIRONMENT --target-env $PREVIEW_ENV --charts $APP_NAME
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s

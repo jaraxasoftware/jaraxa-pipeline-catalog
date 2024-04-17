@@ -13,7 +13,7 @@ spec:
         stepTemplate:
           env:
           - name: OKTETO_DOMAIN
-            value: predev.jaraxa.systems         
+            value: predev.jaraxa.systems
           - name: HOME
             value: /tekton/home
           envFrom:
@@ -50,7 +50,7 @@ spec:
           script: |
             #!/bin/bash
             cp .env_docker .env
-            okteto build -f $OKTETO_COMPOSE -n $KOMPOSE_NAMESPACE            
+            okteto build -f $OKTETO_COMPOSE -n $KOMPOSE_NAMESPACE
         - image: okteto/okteto:2.12.0
           name: okteto-deploy
           resources: {}

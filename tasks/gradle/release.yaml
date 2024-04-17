@@ -24,7 +24,7 @@ spec:
           volumeMounts:
           - mountPath: /home/gradle/.gradle/gradle.properties
             subPath: gradle.properties
-            name: gradle     
+            name: gradle
           workingDir: /workspace/source
         steps:
         - env:
@@ -49,7 +49,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx-release-version -debug -next-version=from-file:app/build.gradle -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-SNAPSHOT > VERSION
-            sed -i -E "s/(version = '[0-9]+\.[0-9]+\.[0-9]')/\1 + '-SNAPSHOT'/" app/build.gradle            
+            sed -i -E "s/(version = '[0-9]+\.[0-9]+\.[0-9]')/\1 + '-SNAPSHOT'/" app/build.gradle
         - image: ghcr.io/jenkins-x/jx-release-version:2.7.0
           name: next-version-gradle
           script: |
@@ -82,7 +82,7 @@ spec:
           resources: {}
           script: |
             #!/bin/sh
-            gradle publish $BUILD_OPTS            
+            gradle publish $BUILD_OPTS
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
@@ -102,7 +102,7 @@ spec:
               --context=/workspace/source \
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION \
-              --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest 
+              --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest
         - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: promote-changelog
           resources: {}
@@ -142,8 +142,8 @@ spec:
           resources: {}
           script: |
             #!/usr/bin/env sh
-            source .jx/variables.sh          
-            jx updatebot sync --source-env $ENVIRONMENT --target-env $PREVIEW_ENV --charts $APP_NAME  
+            source .jx/variables.sh
+            jx updatebot sync --source-env $ENVIRONMENT --target-env $PREVIEW_ENV --charts $APP_NAME
         volumes:
         - name: gradle
           secret:
@@ -154,7 +154,7 @@ spec:
             description: |
               Default Workspace
             optional: false
-            mountPath: /workspace/source            
+            mountPath: /workspace/source
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s

@@ -14,21 +14,21 @@ spec:
         optional: true
     name: ""
     resources: {}
-    workingDir: /workspace/source    
+    workingDir: /workspace/source
   steps:
   - image: ghcr.io/jenkins-x/jx-boot:3.10.124
     name: jx-variables
     resources: {}
     script: |
       #!/usr/bin/env sh
-      jx gitops variables  
+      jx gitops variables
   - image: ghcr.io/jenkins-x/jx-boot:3.10.124
     name: git-history
     resources: {}
     script: |
-      #!/usr/bin/env sh 
+      #!/usr/bin/env sh
       set -x
-      git fetch --prune --tags --force  
+      git fetch --prune --tags --force
   - env:
     - name: GITHUB_TOKEN
       valueFrom:
@@ -50,9 +50,9 @@ spec:
     name: invoke-jira-webhook
     resources: {}
     script: |
-      #!/usr/bin/env sh 
+      #!/usr/bin/env sh
       source .jx/variables.sh
       export RELATED_JIRA_ISSUES=$(cat ./JIRA_ISSUES)
       echo JIRA Tickets are: $RELATED_JIRA_ISSUES
-      set -x      
+      set -x
       curl -XPOST -H "Content-Type: application/json" -d '{"data": {"version": "'"$APP_NAME - $VERSION"'","projectname": "'"$JIRA_PROJECT"'"}, "issues": ['"$RELATED_JIRA_ISSUES"']}' $JIRA_WEBHOOK_URL

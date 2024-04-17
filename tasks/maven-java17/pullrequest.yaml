@@ -79,7 +79,7 @@ spec:
             git checkout master docs
             git add docs/
             git commit -am "Update karate tests gh-pages"
-            git push -f          
+            git push -f
         - image: node:18-slim
           name: test-results-report
           resources: {}
@@ -87,9 +87,9 @@ spec:
             #!/bin/bash
             source .jx/variables.sh
             export DATE=$(date "+%Y%m%d")
-            
+
             npm i test-results-reporter
-            npx test-results-reporter publish                     
+            npx test-results-reporter publish
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}

@@ -13,7 +13,7 @@ spec:
         stepTemplate:
           env:
           - name: HOME
-            value: /tekton/home        
+            value: /tekton/home
           envFrom:
           - secretRef:
               name: jx-boot-job-env-vars
@@ -27,7 +27,7 @@ spec:
           - mountPath: /root/.gnupg
             name: release-gpg
           - name: image-cache
-            mountPath: /image-cache            
+            mountPath: /image-cache
           workingDir: /workspace/source
         steps:
         - env:
@@ -35,7 +35,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: password
-                name: tekton-git          
+                name: tekton-git
           - name: GIT_USER
             valueFrom:
               secretKeyRef:
@@ -87,7 +87,7 @@ spec:
           script: |
             #!/bin/ash
             if [ -d "charts/$REPO_NAME" ]; then cd charts/$REPO_NAME
-            helm-docs; else echo no charts; fi              
+            helm-docs; else echo no charts; fi
         - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: promote-changelog-uat
           resources: {}
@@ -162,13 +162,13 @@ spec:
             secretName: jenkins-release-gpg
         - name: image-cache
           persistentVolumeClaim:
-            claimName: kaniko-docker-cache            
+            claimName: kaniko-docker-cache
         workspaces:
           - name: source
             description: |
               Default Workspace
             optional: false
-            mountPath: /workspace/source 
+            mountPath: /workspace/source
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
 status: {}

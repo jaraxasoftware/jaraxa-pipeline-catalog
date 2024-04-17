@@ -28,7 +28,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: username
-                name: tekton-git                           
+                name: tekton-git
           envFrom:
           - secretRef:
               name: jx-boot-job-env-vars
@@ -45,7 +45,7 @@ spec:
             #!/bin/sh
             DOCTL_VERSION=1.100.0
             apk add --no-cache wget
-            wget https://github.com/digitalocean/doctl/releases/download/v${DOCTL_VERSION}/doctl-${DOCTL_VERSION}-linux-amd64.tar.gz            
+            wget https://github.com/digitalocean/doctl/releases/download/v${DOCTL_VERSION}/doctl-${DOCTL_VERSION}-linux-amd64.tar.gz
             tar xf ./doctl-${DOCTL_VERSION}-linux-amd64.tar.gz
             mkdir /workspace/source/bin
             mv ./doctl /workspace/source/bin/doctl
@@ -61,7 +61,7 @@ spec:
           script: |
             #!/bin/bash
             echo "Changing context to $CLUSTER_NAME cluster"
-            kubectl ctx $CLUSTER_NAME          
+            kubectl ctx $CLUSTER_NAME
         - image: ghcr.io/jenkins-x/jx-admin:0.0.174
           name: admin-log
           resources: {}

@@ -52,7 +52,7 @@ spec:
           name: next-version-uat
           script: |
             #!/usr/bin/env sh
-            jx-release-version -debug -previous-version=from-tag:"^v\d+\.\d+\.\d+$" -next-version=semantic:strip-prerelease -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT-$BUILD_ID > VERSION             
+            jx-release-version -debug -previous-version=from-tag:"^v\d+\.\d+\.\d+$" -next-version=semantic:strip-prerelease -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT-$BUILD_ID > VERSION
         - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: jx-variables
           resources:
@@ -74,7 +74,7 @@ spec:
             echo "upgrading the pom to snapshot version $VERSION-SNAPSHOT"
             mvn versions:set -DnewVersion=$VERSION-SNAPSHOT
 
-            mvn --no-transfer-progress clean deploy            
+            mvn --no-transfer-progress clean deploy
         - image: maven:3.8-openjdk-15
           name: build-mvn-deploy
           resources: {}
@@ -106,7 +106,7 @@ spec:
               --context=/workspace/source \
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION \
-              --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest 
+              --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest
         - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: promote-changelog-uat
           resources: {}
@@ -123,7 +123,7 @@ spec:
             git add * || true
             git commit -a -m "chore: release $VERSION" --allow-empty
             git tag -fa v$VERSION -m "Pre-release version $VERSION"
-            git push --force origin v$VERSION            
+            git push --force origin v$VERSION
         - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: promote-changelog
           resources: {}
@@ -150,7 +150,7 @@ spec:
           script: |
             #!/bin/ash
             if [ -d "charts/$REPO_NAME" ]; then cd charts/$REPO_NAME
-            helm-docs; else echo no charts; fi            
+            helm-docs; else echo no charts; fi
         - image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: promote-helm-release
           resources: {}
@@ -170,8 +170,8 @@ spec:
           resources: {}
           script: |
             #!/usr/bin/env sh
-            source .jx/variables.sh          
-            jx updatebot sync --source-env $ENVIRONMENT --target-env $PREVIEW_ENV --charts $APP_NAME  
+            source .jx/variables.sh
+            jx updatebot sync --source-env $ENVIRONMENT --target-env $PREVIEW_ENV --charts $APP_NAME
         volumes:
         - name: maven-settings
           secret:
