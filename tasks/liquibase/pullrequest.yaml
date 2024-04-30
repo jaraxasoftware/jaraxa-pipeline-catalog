@@ -33,6 +33,7 @@ spec:
         steps:
         - name: liquibase-validate
           image: liquibase/liquibase:4.27
+          resources: {}          
           script: |
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat preview/PG_PASSWORD_PREVIEW)
@@ -41,6 +42,7 @@ spec:
             liquibase validate --url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-update-rollback-update
           image: liquibase/liquibase:4.27
+          resources: {}          
           script: |
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat preview/PG_PASSWORD_PREVIEW)
@@ -49,6 +51,7 @@ spec:
             liquibase update-testing-rollback --url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-drop-db
           image: liquibase/liquibase:4.27
+          resources: {}          
           script: |
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat preview/PG_PASSWORD)
@@ -58,6 +61,7 @@ spec:
             liquibase drop-all --url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet --username=postgres
         - name: liquibase-history
           image: liquibase/liquibase:4.27
+          resources: {}          
           script: |
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat preview/PG_PASSWORD_PREVIEW)
@@ -66,6 +70,7 @@ spec:
             liquibase history --url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-diff
           image: liquibase/liquibase:4.27
+          resources: {}          
           script: |
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat preview/PG_PASSWORD_DEVELOP)
