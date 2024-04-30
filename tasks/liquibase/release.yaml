@@ -58,8 +58,8 @@ spec:
           resources: {}
           script: |
             #!/bin/bash
-            source .jx/variables.sh
             export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD)
+            export VERSION=$(cat ./VERSION)
 
             liquibase tag --tag=${VERSION} --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-drop-db
