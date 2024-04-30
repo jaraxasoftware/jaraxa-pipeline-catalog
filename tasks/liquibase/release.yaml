@@ -35,11 +35,11 @@ spec:
           name: get-postgres-auth
           script: |
             #!/bin/bash
-            
+
             kubectl get secret petuser.dkv-pet-cloud-postgres.credentials.postgresql.acid.zalan.do -n ${RELEASE_NAMESPACE} -o 'jsonpath={.data.password}' | base64 -d > ./PG_PASSWORD
         - name: liquibase-validate
           image: liquibase/liquibase:4.27
-          resources: {}          
+          resources: {}
           script: |
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD)
@@ -47,7 +47,7 @@ spec:
             liquibase validate --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-update-rollback-update
           image: liquibase/liquibase:4.27
-          resources: {}          
+          resources: {}
           script: |
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD)
@@ -55,7 +55,7 @@ spec:
             liquibase update-testing-rollback --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-drop-db
           image: liquibase/liquibase:4.27
-          resources: {}          
+          resources: {}
           script: |
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD)
@@ -64,7 +64,7 @@ spec:
             liquibase drop-all --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet --username=postgres
         - name: liquibase-history
           image: liquibase/liquibase:4.27
-          resources: {}          
+          resources: {}
           script: |
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD)
@@ -72,7 +72,7 @@ spec:
             liquibase history --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-diff
           image: liquibase/liquibase:4.27
-          resources: {}          
+          resources: {}
           script: |
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD_DESTINATION)

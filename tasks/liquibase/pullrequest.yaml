@@ -33,7 +33,7 @@ spec:
         steps:
         - name: liquibase-validate
           image: liquibase/liquibase:4.27
-          resources: {}          
+          resources: {}
           script: |
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat preview/PG_PASSWORD_PREVIEW)
@@ -42,7 +42,7 @@ spec:
             liquibase validate --url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-update-rollback-update
           image: liquibase/liquibase:4.27
-          resources: {}          
+          resources: {}
           script: |
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat preview/PG_PASSWORD_PREVIEW)
@@ -51,7 +51,7 @@ spec:
             liquibase update-testing-rollback --url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-drop-db
           image: liquibase/liquibase:4.27
-          resources: {}          
+          resources: {}
           script: |
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat preview/PG_PASSWORD)
@@ -61,7 +61,7 @@ spec:
             liquibase drop-all --url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet --username=postgres
         - name: liquibase-history
           image: liquibase/liquibase:4.27
-          resources: {}          
+          resources: {}
           script: |
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat preview/PG_PASSWORD_PREVIEW)
@@ -70,14 +70,14 @@ spec:
             liquibase history --url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-diff
           image: liquibase/liquibase:4.27
-          resources: {}          
+          resources: {}
           script: |
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat preview/PG_PASSWORD_DEVELOP)
             export LIQUIBASE_COMMAND_REFERENCE_PASSWORD=$(cat preview/PG_PASSWORD_PREVIEW)
             export PREVIEW_NAMESPACE=$(cat preview/PREVIEW_NAMESPACE)
 
-            liquibase diff --reference-url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet --url jdbc:postgresql://dkv-pet-cloud-postgres.jx-pet3-develop.svc.cluster.local:5432/pet        
+            liquibase diff --reference-url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet --url jdbc:postgresql://dkv-pet-cloud-postgres.jx-pet3-develop.svc.cluster.local:5432/pet
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
