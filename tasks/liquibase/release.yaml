@@ -1,0 +1,85 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  creationTimestamp: null
+  name: pullrequest
+spec:
+  pipelineSpec:
+    tasks:
+    - name: from-build-pack
+      resources: {}
+      taskSpec:
+        metadata: {}
+        stepTemplate:
+          env:
+          - name: LIQUIBASE_COMMAND_USERNAME
+            value: postgres
+          - name: LIQUIBASE_COMMAND_REFERENCE_USERNAME
+            value: postgres
+          - name: LIQUIBASE_COMMAND_CHANGELOG_FILE
+            value: liquibase/changelog-master.xml
+          - name: LIQUIBASE_SEARCH_PATH
+            value: src/main/resources/
+          - name: HOME
+            value: /tekton/home
+          envFrom:
+          - secretRef:
+              name: jx-boot-job-env-vars
+              optional: true
+          name: ""
+          resources:
+            limits: {}
+          workingDir: /workspace/source
+        steps:
+        - image: ghcr.io/jaraxasoftware/kubectx:latest
+          name: get-postgres-auth
+          script: |
+            #!/bin/bash
+            
+            kubectl get secret petuser.dkv-pet-cloud-postgres.credentials.postgresql.acid.zalan.do -n ${RELEASE_NAMESPACE} -o 'jsonpath={.data.password}' | base64 -d > ./PG_PASSWORD
+        - name: liquibase-validate
+          image: liquibase/liquibase:4.27
+          resources: {}          
+          script: |
+            #!/bin/bash
+            export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD)
+
+            liquibase validate --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet
+        - name: liquibase-update-rollback-update
+          image: liquibase/liquibase:4.27
+          resources: {}          
+          script: |
+            #!/bin/bash
+            export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD)
+
+            liquibase update-testing-rollback --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet
+        - name: liquibase-drop-db
+          image: liquibase/liquibase:4.27
+          resources: {}          
+          script: |
+            #!/bin/bash
+            export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD)
+
+            liquibase execute-sql --sql="DROP EXTENSION pg_stat_kcache CASCADE; DROP EXTENSION pg_stat_statements CASCADE;" --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet --username=postgres
+            liquibase drop-all --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet --username=postgres
+        - name: liquibase-history
+          image: liquibase/liquibase:4.27
+          resources: {}          
+          script: |
+            #!/bin/bash
+            export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD)
+
+            liquibase history --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet
+        - name: liquibase-diff
+          image: liquibase/liquibase:4.27
+          resources: {}          
+          script: |
+            #!/bin/bash
+            export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD_DESTINATION)
+            export LIQUIBASE_COMMAND_REFERENCE_PASSWORD=$(cat ./PG_PASSWORD)
+
+            liquibase diff --reference-url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet --url jdbc:postgresql://${DESTINATION_URL}:5432/pet
+  podTemplate: {}
+  serviceAccountName: tekton-bot
+  timeout: 12h0m0s
+status: {}
