@@ -29,7 +29,6 @@ spec:
           name: ""
           resources:
             limits: {}
-          volumeMounts: {}
           workingDir: /workspace/source
         steps:
         - name: liquibase-validate
