@@ -39,7 +39,7 @@ spec:
             export LIQUIBASE_COMMAND_PASSWORD=$(cat preview/PG_PASSWORD_PREVIEW)
             export PREVIEW_NAMESPACE=$(cat preview/PREVIEW_NAMESPACE)
 
-            liquibase validate --url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet
+            liquibase validate --url jdbc:postgresql://preview-dkv-pet-cloud-postgres-cnpg-rw.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-update-rollback-update
           image: liquibase/liquibase:4.27
           resources: {}
@@ -48,7 +48,7 @@ spec:
             export LIQUIBASE_COMMAND_PASSWORD=$(cat preview/PG_PASSWORD_PREVIEW)
             export PREVIEW_NAMESPACE=$(cat preview/PREVIEW_NAMESPACE)
 
-            liquibase update-testing-rollback --url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet
+            liquibase update-testing-rollback --url jdbc:postgresql://preview-dkv-pet-cloud-postgres-cnpg-rw.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-drop-db
           image: liquibase/liquibase:4.27
           resources: {}
@@ -57,8 +57,8 @@ spec:
             export LIQUIBASE_COMMAND_PASSWORD=$(cat preview/PG_PASSWORD)
             export PREVIEW_NAMESPACE=$(cat preview/PREVIEW_NAMESPACE)
 
-            liquibase execute-sql --sql="DROP EXTENSION pg_stat_kcache CASCADE; DROP EXTENSION pg_stat_statements CASCADE;" --url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet --username=postgres
-            liquibase drop-all --url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet --username=postgres
+            liquibase execute-sql --sql="DROP EXTENSION pg_stat_kcache CASCADE; DROP EXTENSION pg_stat_statements CASCADE;" --url jdbc:postgresql://preview-dkv-pet-cloud-postgres-cnpg-rw.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet --username=postgres
+            liquibase drop-all --url jdbc:postgresql://preview-dkv-pet-cloud-postgres-cnpg-rw.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet --username=postgres
         - name: liquibase-history
           image: liquibase/liquibase:4.27
           resources: {}
@@ -67,7 +67,7 @@ spec:
             export LIQUIBASE_COMMAND_PASSWORD=$(cat preview/PG_PASSWORD_PREVIEW)
             export PREVIEW_NAMESPACE=$(cat preview/PREVIEW_NAMESPACE)
 
-            liquibase history --url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet
+            liquibase history --url jdbc:postgresql://preview-dkv-pet-cloud-postgres-cnpg-rw.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-diff
           image: liquibase/liquibase:4.27
           resources: {}
@@ -77,7 +77,7 @@ spec:
             export LIQUIBASE_COMMAND_REFERENCE_PASSWORD=$(cat preview/PG_PASSWORD_PREVIEW)
             export PREVIEW_NAMESPACE=$(cat preview/PREVIEW_NAMESPACE)
 
-            liquibase diff --reference-url jdbc:postgresql://preview-dkv-pet-cloud-postgres.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet --url jdbc:postgresql://dkv-pet-cloud-postgres.jx-pet3-develop.svc.cluster.local:5432/pet
+            liquibase diff --reference-url jdbc:postgresql://preview-dkv-pet-cloud-postgres-cnpg-rw.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet --url jdbc:postgresql://dkv-pet-cloud-postgres.jx-pet3-develop.svc.cluster.local:5432/pet
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
