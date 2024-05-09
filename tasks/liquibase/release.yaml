@@ -36,7 +36,7 @@ spec:
           script: |
             #!/bin/bash
 
-            kubectl get secret petuser.dkv-pet-cloud-postgres.credentials.postgresql.acid.zalan.do -n ${RELEASE_NAMESPACE} -o 'jsonpath={.data.password}' | base64 -d > ./PG_PASSWORD
+            kubectl get secret petuser.dkv-pet-cloud-postgres-cnpg-rw.credentials.postgresql.acid.zalan.do -n ${RELEASE_NAMESPACE} -o 'jsonpath={.data.password}' | base64 -d > ./PG_PASSWORD
         - name: liquibase-validate
           image: liquibase/liquibase:4.27
           resources: {}
@@ -44,7 +44,7 @@ spec:
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD)
 
-            liquibase validate --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet
+            liquibase validate --url jdbc:postgresql://dkv-pet-cloud-postgres-cnpg-rw.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-update-rollback-update
           image: liquibase/liquibase:4.27
           resources: {}
@@ -52,7 +52,7 @@ spec:
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD)
 
-            liquibase update-testing-rollback --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet
+            liquibase update-testing-rollback --url jdbc:postgresql://dkv-pet-cloud-postgres-cnpg-rw.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-tag
           image: liquibase/liquibase:4.27
           resources: {}
@@ -61,7 +61,7 @@ spec:
             export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD)
             export VERSION=$(cat ./VERSION)
 
-            liquibase tag --tag=${VERSION} --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet
+            liquibase tag --tag=${VERSION} --url jdbc:postgresql://dkv-pet-cloud-postgres-cnpg-rw.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-drop-db
           image: liquibase/liquibase:4.27
           resources: {}
@@ -69,8 +69,8 @@ spec:
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD)
 
-            liquibase execute-sql --sql="DROP EXTENSION pg_stat_kcache CASCADE; DROP EXTENSION pg_stat_statements CASCADE;" --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet --username=postgres
-            liquibase drop-all --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet --username=postgres
+            liquibase execute-sql --sql="DROP EXTENSION pg_stat_kcache CASCADE; DROP EXTENSION pg_stat_statements CASCADE;" --url jdbc:postgresql://dkv-pet-cloud-postgres-cnpg-rw.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet --username=postgres
+            liquibase drop-all --url jdbc:postgresql://dkv-pet-cloud-postgres-cnpg-rw.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet --username=postgres
         - name: liquibase-history
           image: liquibase/liquibase:4.27
           resources: {}
@@ -78,7 +78,7 @@ spec:
             #!/bin/bash
             export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD)
 
-            liquibase history --url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet
+            liquibase history --url jdbc:postgresql://dkv-pet-cloud-postgres-cnpg-rw.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet
         - name: liquibase-diff
           image: liquibase/liquibase:4.27
           resources: {}
@@ -87,7 +87,7 @@ spec:
             export LIQUIBASE_COMMAND_PASSWORD=$(cat ./PG_PASSWORD_DESTINATION)
             export LIQUIBASE_COMMAND_REFERENCE_PASSWORD=$(cat ./PG_PASSWORD)
 
-            liquibase diff --reference-url jdbc:postgresql://dkv-pet-cloud-postgres.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet --url jdbc:postgresql://${DESTINATION_URL}:5432/pet
+            liquibase diff --reference-url jdbc:postgresql://dkv-pet-cloud-postgres-cnpg-rw.${RELEASE_NAMESPACE}.svc.cluster.local:5432/pet --url jdbc:postgresql://${DESTINATION_URL}:5432/pet
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s

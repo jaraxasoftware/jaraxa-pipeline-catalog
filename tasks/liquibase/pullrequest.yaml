@@ -77,7 +77,7 @@ spec:
             export LIQUIBASE_COMMAND_REFERENCE_PASSWORD=$(cat preview/PG_PASSWORD_PREVIEW)
             export PREVIEW_NAMESPACE=$(cat preview/PREVIEW_NAMESPACE)
 
-            liquibase diff --reference-url jdbc:postgresql://preview-dkv-pet-cloud-postgres-cnpg-rw.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet --url jdbc:postgresql://dkv-pet-cloud-postgres.jx-pet3-develop.svc.cluster.local:5432/pet
+            liquibase diff --reference-url jdbc:postgresql://preview-dkv-pet-cloud-postgres-cnpg-rw.${PREVIEW_NAMESPACE}.svc.cluster.local:5432/pet --url jdbc:postgresql://dkv-pet-cloud-postgres-cnpg-rw.jx-pet3-develop.svc.cluster.local:5432/pet
   podTemplate: {}
   serviceAccountName: tekton-bot
   timeout: 12h0m0s
