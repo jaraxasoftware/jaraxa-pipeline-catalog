@@ -36,7 +36,7 @@ spec:
           script: |
             #!/bin/bash
 
-            kubectl get secret petuser.dkv-pet-cloud-postgres-cnpg-rw.credentials.postgresql.acid.zalan.do -n ${RELEASE_NAMESPACE} -o 'jsonpath={.data.password}' | base64 -d > ./PG_PASSWORD
+            kubectl get secret dkv-pet-cloud-postgres-cnpg-app -n ${RELEASE_NAMESPACE} -o 'jsonpath={.data.password}' | base64 -d > ./PG_PASSWORD
         - name: liquibase-validate
           image: liquibase/liquibase:4.27
           resources: {}
