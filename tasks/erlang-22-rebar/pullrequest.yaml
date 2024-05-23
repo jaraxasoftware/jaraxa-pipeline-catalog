@@ -58,7 +58,7 @@ spec:
             #!/usr/bin/env bash
             source .jx/variables.sh
             hadolint --no-fail Dockerfile
-        - image: gcr.io/kaniko-project/executor:v1.9.1-debug
+        - image: gcr.io/kaniko-project/executor:v1.23.0-debug
           name: build-container-build
           resources: {}
           script: |
