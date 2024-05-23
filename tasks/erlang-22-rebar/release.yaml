@@ -78,7 +78,7 @@ spec:
             source .jx/variables.sh
             git config --global url."https://".insteadOf git://
             ERL_FLAGS="-config $SONAR_TESTS_CONFIG" rebar3 eunit
-        - image: sonarsource/sonar-scanner-cli:latest
+        - image: sonarsource/sonar-scanner-cli:5.0.1
           name: sonar-code-analisys
           resources: {}
           script: |
