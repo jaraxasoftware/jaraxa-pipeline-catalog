@@ -48,7 +48,7 @@ spec:
           script: |
             #!/bin/sh
             CI=true DISPLAY=:99 npm test
-        - image: sonarsource/sonar-scanner-cli:5.0.1
+        - image: sonarsource/sonar-scanner-cli:11.0
           name: sonar-code-analisys
           resources: {}
           script: |

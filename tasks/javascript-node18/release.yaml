@@ -102,7 +102,7 @@ spec:
                 #!/bin/bash
                 source .jx/variables.sh
                 npm publish
-            - image: sonarsource/sonar-scanner-cli:5.0.1
+            - image: sonarsource/sonar-scanner-cli:11.0
               name: sonar-code-analisys
               resources: {}
               script: |
