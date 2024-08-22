@@ -113,6 +113,7 @@ spec:
               -Dsonar.working.directory=/tmp/.scannerwork
             sleep 6000
           securityContext:
+            runAsNonRoot: true
             runAsUser: 1000
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
