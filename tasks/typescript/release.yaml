@@ -100,8 +100,6 @@ spec:
           script: |
             #!/bin/bash
             export SONAR_TOKEN=$SONAR_TOKEN
-            whoami
-            ps aux
             sonar-scanner \
               -Dsonar.projectKey=$SONAR_PROJECT_KEY \
               -Dsonar.exclusions=$SONAR_EXCLUSIONS \
@@ -110,7 +108,6 @@ spec:
               -Dsonar.projectVersion=$VERSION \
               -Dsonar.host.url=$SONAR_URL \
               -Dsonar.javascript.node.maxspace=8192
-            sleep 6000
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
