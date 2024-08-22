@@ -101,7 +101,7 @@ spec:
             #!/bin/bash
             export SONAR_TOKEN=$SONAR_TOKEN
             export SONAR_USER_HOME="/tmp/.scannerwork"
-            mkdir /tmp/.scannerwork && chown -R 1000:1000 /tmp/.scannerwork
+            chown -R 1000:1000 /tmp/.scannerwork
             sonar-scanner \
               -Dsonar.projectKey=$SONAR_PROJECT_KEY \
               -Dsonar.exclusions=$SONAR_EXCLUSIONS \
