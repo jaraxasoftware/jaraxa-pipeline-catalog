@@ -97,16 +97,20 @@ spec:
         - image: sonarsource/sonar-scanner-cli:11.0
           name: sonar-code-analisys
           resources: {}
-          command:
-            - sonar-scanner
-          args:
-            - -Dsonar.projectKey=$SONAR_PROJECT_KEY
-            - -Dsonar.exclusions=$SONAR_EXCLUSIONS
-            - -Dsonar.sourceEncoding=UTF-8
-            - -Dsonar.sources=.
-            - -Dsonar.projectVersion=$VERSION
-            - -Dsonar.host.url=$SONAR_URL
-            - -Dsonar.javascript.node.maxspace=8192
+          script: |
+            #!/bin/bash
+            export SONAR_TOKEN=$SONAR_TOKEN
+            export SONAR_USER_HOME="/tmp/.scannerwork"
+            mkdir /tmp/.scannerwork && chown -R 1000:1000 /tmp/.scannerwork
+            sonar-scanner \
+              -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+              -Dsonar.exclusions=$SONAR_EXCLUSIONS \
+              -Dsonar.sourceEncoding=UTF-8 \
+              -Dsonar.sources=. \
+              -Dsonar.projectVersion=$VERSION \
+              -Dsonar.host.url=$SONAR_URL \
+              -Dsonar.javascript.node.maxspace=8192 \
+              -Dsonar.working.directory=/tmp/.scannerwork
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
