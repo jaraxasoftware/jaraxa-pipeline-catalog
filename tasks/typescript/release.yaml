@@ -101,6 +101,7 @@ spec:
             #!/bin/bash
             source .jx/variables.sh
             export SONAR_TOKEN=$SONAR_TOKEN
+            export SONAR_USER_HOME="/tmp/.scannerwork"            
             sonar-scanner \
               -Dsonar.projectKey=$SONAR_PROJECT_KEY \
               -Dsonar.exclusions=$SONAR_EXCLUSIONS \
