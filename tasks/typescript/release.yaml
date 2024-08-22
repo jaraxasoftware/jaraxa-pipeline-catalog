@@ -95,7 +95,7 @@ spec:
             source .jx/variables.sh
             npm publish
         - image: sonarsource/sonar-scanner-cli:11.0
-          name: sonar-code-analisys-2
+          name: sonar-code-analisys
           resources: {}
           command:
             - sonar-scanner
@@ -107,24 +107,6 @@ spec:
             - -Dsonar.projectVersion=$VERSION
             - -Dsonar.host.url=$SONAR_URL
             - -Dsonar.javascript.node.maxspace=8192
-        - image: sonarsource/sonar-scanner-cli:11.0
-          name: sonar-code-analisys
-          resources: {}
-          script: |
-            #!/bin/bash
-            source .jx/variables.sh
-            export SONAR_TOKEN=$SONAR_TOKEN
-            export SONAR_USER_HOME="/tmp/.scannerwork"
-            sleep 6000                     
-            sonar-scanner \
-              -Dsonar.projectKey=$SONAR_PROJECT_KEY \
-              -Dsonar.exclusions=$SONAR_EXCLUSIONS \
-              -Dsonar.sourceEncoding=UTF-8 \
-              -Dsonar.sources=. \
-              -Dsonar.projectVersion=$VERSION \
-              -Dsonar.host.url=$SONAR_URL \
-              -Dsonar.javascript.node.maxspace=8192 \
-              -Dsonar.working.directory=/tmp/.scannerwork
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
