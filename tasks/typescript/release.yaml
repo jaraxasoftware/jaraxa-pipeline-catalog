@@ -112,6 +112,8 @@ spec:
               -Dsonar.javascript.node.maxspace=8192 \
               -Dsonar.working.directory=/tmp/.scannerwork
             sleep 6000
+          securityContext:
+            runAsUser: 1000
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
