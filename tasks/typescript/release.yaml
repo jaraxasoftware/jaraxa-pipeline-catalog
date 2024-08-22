@@ -107,7 +107,8 @@ spec:
               -Dsonar.sourceEncoding=UTF-8 \
               -Dsonar.sources=. \
               -Dsonar.projectVersion=$VERSION \
-              -Dsonar.host.url=$SONAR_URL
+              -Dsonar.host.url=$SONAR_URL \
+              -Dsonar.javascript.node.maxspace=8192
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}

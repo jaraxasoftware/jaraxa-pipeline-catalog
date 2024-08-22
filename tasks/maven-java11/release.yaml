@@ -130,7 +130,8 @@ spec:
               -Dsonar.sourceEncoding=UTF-8 \
               -Dsonar.sources=. \
               -Dsonar.projectVersion=$VERSION \
-              -Dsonar.host.url=$SONAR_URL
+              -Dsonar.host.url=$SONAR_URL \
+              -Dsonar.javascript.node.maxspace=8192
         - image: gcr.io/kaniko-project/executor:v1.23.0-debug
           name: build-container-build
           resources: {}
