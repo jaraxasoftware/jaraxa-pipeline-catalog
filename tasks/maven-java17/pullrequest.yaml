@@ -70,6 +70,7 @@ spec:
               -Dsonar.sources=. \
               -Dsonar.projectVersion=$VERSION \
               -Dsonar.host.url=$SONAR_URL \
+              -Dsonar.java.binaries=$TARGET_DIR \
               -Dsonar.javascript.node.maxspace=8192            
         - image: maven:3.8.2-openjdk-17
           name: mvn-karate-tests
