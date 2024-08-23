@@ -63,8 +63,6 @@ spec:
             sonar-scanner \
               -Dsonar.projectKey=$SONAR_PROJECT_KEY \
               -Dsonar.pullrequest.key=$PULL_NUMBER \
-              -Dsonar.pullrequest.branch=$PULL_PULL_SHA \
-              -Dsonar.pullrequest.base=$PULL_BASE_REF \
               -Dsonar.exclusions=$SONAR_EXCLUSIONS \
               -Dsonar.sourceEncoding=UTF-8 \
               -Dsonar.sources=. \
