@@ -98,7 +98,7 @@ spec:
             echo "upgrading the pom to version $VERSION"
             mvn versions:set -DnewVersion=$VERSION
 
-            mvn --no-transfer-progress install
+            mvn --no-transfer-progress install            
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
