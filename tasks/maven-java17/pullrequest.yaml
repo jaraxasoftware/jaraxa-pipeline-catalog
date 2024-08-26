@@ -80,6 +80,7 @@ spec:
               -Dsonar.pullrequest.key=$PULL_NUMBER \
               -Dsonar.pullrequest.branch=$PR_HEAD_REF \
               -Dsonar.pullrequest.base=$PULL_BASE_REF \
+              -Dsonar.scm.revision=$PR_HEAD_SHA \
               -Dsonar.javascript.node.maxspace=8192
         - image: maven:3.8.2-openjdk-17
           name: mvn-karate-tests
