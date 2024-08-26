@@ -66,6 +66,7 @@ spec:
               -Dsonar.projectKey=$SONAR_PROJECT_KEY \
               -Dsonar.branch.name=$PULL_BASE_REF \
               -Dsonar.exclusions=$SONAR_EXCLUSIONS \
+              -Dsonar.maven.scanAll=true \              
               -Dsonar.javascript.node.maxspace=8192
         - image: maven:3.8.2-openjdk-17
           name: maven-sonar-code-analisys-pr
