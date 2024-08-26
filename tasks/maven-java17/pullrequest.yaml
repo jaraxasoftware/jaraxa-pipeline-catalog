@@ -103,8 +103,8 @@ spec:
             source .jx/variables.sh
             export DATE=$(date "+%Y%m%d")
 
-            npm i test-results-reporter
-            npx test-results-reporter publish
+            npm i testbeats
+            npx testbeats publish
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
