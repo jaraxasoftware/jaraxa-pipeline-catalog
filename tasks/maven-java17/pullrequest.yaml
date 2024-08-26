@@ -121,7 +121,7 @@ spec:
             export DATE=$(date "+%Y%m%d")
 
             npm i testbeats
-            npx testbeats publish
+            npx testbeats publish -c config.json
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
