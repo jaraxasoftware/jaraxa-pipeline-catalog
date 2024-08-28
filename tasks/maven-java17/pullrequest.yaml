@@ -49,7 +49,7 @@ spec:
           script: |
             #!/usr/bin/env bash
             source .jx/variables.sh
-            mvn --no-transfer-progress install
+            mvn --no-transfer-progress install -Pcoverage
         - image: maven:3.8.2-openjdk-17
           name: maven-sonar-code-analisys
           resources: {}
@@ -82,6 +82,7 @@ spec:
               -Dsonar.pullrequest.base=$PULL_BASE_REF \
               -Dsonar.scm.revision=$PR_HEAD_SHA \
               -Dsonar.maven.scanAll=true \
+              -Dsonar.coverage.jacoco.xmlReportPaths=TARGET_DIR/site/jacoco.xml \
               -Dsonar.javascript.node.maxspace=8192
         - image: maven:3.8.2-openjdk-17
           name: mvn-karate-tests
