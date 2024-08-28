@@ -111,9 +111,10 @@ spec:
               -Dsonar.host.url=$SONAR_URL \
               -Dsonar.projectKey=$SONAR_PROJECT_KEY \
               -Dsonar.branch.name=$PULL_BASE_REF \
+              -Dsonar.projectVersion=$VERSION \
               -Dsonar.exclusions=$SONAR_EXCLUSIONS \
               -Dsonar.maven.scanAll=true \
-              -Dsonar.javascript.node.maxspace=8192                        
+              -Dsonar.javascript.node.maxspace=8192
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
