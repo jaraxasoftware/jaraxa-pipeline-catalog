@@ -79,7 +79,8 @@ spec:
               -Dsonar.pullrequest.branch=$PR_HEAD_REF \
               -Dsonar.pullrequest.base=$PULL_BASE_REF \
               -Dsonar.scm.revision=$PR_HEAD_SHA \
-              -Dsonar.javascript.node.maxspace=8192              
+              -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+              -Dsonar.javascript.node.maxspace=8192
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
