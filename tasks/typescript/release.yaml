@@ -79,7 +79,7 @@ spec:
           resources: {}
           script: |
             #!/bin/sh
-            CI=true DISPLAY=:99 npm test
+            CI=true DISPLAY=:99 npm run test:run
         - image: node:18-slim
           name: build-npm-version
           resources: {}
