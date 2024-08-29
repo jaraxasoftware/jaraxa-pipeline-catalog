@@ -102,12 +102,13 @@ spec:
             source .jx/variables.sh
             export SONAR_TOKEN=$SONAR_TOKEN
             sonar-scanner \
-              -Dsonar.projectKey=$SONAR_PROJECT_KEY \
-              -Dsonar.exclusions=$SONAR_EXCLUSIONS \
-              -Dsonar.sourceEncoding=UTF-8 \
-              -Dsonar.sources=. \
-              -Dsonar.projectVersion=$VERSION \
+              -Dsonar.projectName=$APP_NAME \
+              -Dsonar.token=$SONAR_TOKEN \
               -Dsonar.host.url=$SONAR_URL \
+              -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+              -Dsonar.branch.name=$PULL_BASE_REF \
+              -Dsonar.projectVersion=$VERSION \
+              -Dsonar.exclusions=$SONAR_EXCLUSIONS \
               -Dsonar.javascript.node.maxspace=8192
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
