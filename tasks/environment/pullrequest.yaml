@@ -34,6 +34,35 @@ spec:
           image: ghcr.io/jenkins-x/jx-boot:3.10.124
           name: make-pr
           resources: {}
+        - image: sonarsource/sonar-scanner-cli:11.0
+          name: sonar-code-analisys
+          resources: {}
+          script: |
+            #!/bin/bash
+            sonar-scanner \
+              -Dsonar.projectName=$APP_NAME \
+              -Dsonar.token=$SONAR_TOKEN \
+              -Dsonar.host.url=$SONAR_URL \
+              -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+              -Dsonar.branch.name=$PULL_BASE_REF \
+              -Dsonar.exclusions=$SONAR_INCLUSIONS \
+              -Dsonar.javascript.node.maxspace=8192
+        - image: sonarsource/sonar-scanner-cli:11.0
+          name: sonar-code-analisys-pr
+          resources: {}
+          script: |
+            #!/bin/bash
+            sonar-scanner \
+              -Dsonar.projectName=$APP_NAME \
+              -Dsonar.token=$SONAR_TOKEN \
+              -Dsonar.host.url=$SONAR_URL \
+              -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+              -Dsonar.exclusions=$SONAR_EXCLUSIONS \
+              -Dsonar.pullrequest.key=$PULL_NUMBER \
+              -Dsonar.pullrequest.branch=$PR_HEAD_REF \
+              -Dsonar.pullrequest.base=$PULL_BASE_REF \
+              -Dsonar.scm.revision=$PR_HEAD_SHA \
+              -Dsonar.javascript.node.maxspace=8192
         - image: uses:jaraxasoftware/jaraxa-pipeline-catalog/tasks/kubetest/environment.yaml@versionStream
           name: ""
           resources: {}
