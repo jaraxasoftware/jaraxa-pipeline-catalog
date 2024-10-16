@@ -55,7 +55,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx-release-version -debug -next-version=from-file:app/build.gradle  > VERSION
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.158
           name: jx-variables
           resources:
             # set requests for the pod here
@@ -103,7 +103,7 @@ spec:
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.158
           name: promote-changelog
           resources: {}
           script: |
@@ -123,7 +123,7 @@ spec:
             git push --force origin v$VERSION
 
             jx changelog create --version v${VERSION} --output-markdown ../changelog.md
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.158
           name: promote-helm-release
           resources: {}
           script: |
