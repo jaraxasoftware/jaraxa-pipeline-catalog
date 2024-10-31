@@ -74,7 +74,8 @@ spec:
             echo "upgrading the pom to snapshot version $VERSION-SNAPSHOT"
             mvn versions:set -DnewVersion=$VERSION-SNAPSHOT
 
-            mvn --no-transfer-progress clean deploy
+            mvn --no-transfer-progress clean 
+            deploy
         - image: maven:3.8.2-openjdk-17
           name: build-mvn-deploy
           resources: {}
