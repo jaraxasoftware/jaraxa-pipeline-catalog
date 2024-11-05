@@ -99,7 +99,7 @@ spec:
             mvn versions:set -DnewVersion=$VERSION
 
             mvn --no-transfer-progress clean deploy
-        - image: maven:3.6-openjdk-11
+        - image: maven:3.8.2-openjdk-11
           name: build-mvn-sonar-scan
           resources: {}
           script: |
