@@ -100,7 +100,7 @@ spec:
             SUMMARY=$(jq -r '.Results[]?.Vulnerabilities[]? | "ID: \(.VulnerabilityID), Severity: \(.Severity), Package: \(.PkgName). Installed: \(.InstalledVersion), Fixed: [\(.FixedVersion)]"' /workspace/source/scanresults.json)
             if jq -e '.Results[]?.Vulnerabilities[]? | select(.Severity == "HIGH" or .Severity == "CRITICAL")' /workspace/source/scanresults.json > /dev/null; then
               echo "Vulnerabilities of level HIGH or CRITICAL found."
-              jx gitops pr comment -c ":bangbang: **High or critical vulnerabilities were found** :bangbang: <br><br>$SUMMARY <br><br>Pipeline stopped until dependencies are upgraded."
+              jx gitops pr comment -c ":warning: **High or critical vulnerabilities were found** :warning: <br><br>$SUMMARY <br><br>Pipeline stopped until dependencies are upgraded."
               exit 1
             elif [ -n "$SUMMARY" ]; then
               echo "No vulnerabilities of level HIGH or CRITICAL found, but other vulnerabilities exist."
