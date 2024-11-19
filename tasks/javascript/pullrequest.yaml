@@ -90,7 +90,7 @@ spec:
           script: |
             # Scan all for reporting in pipeline
             trivy fs . --scanners vuln --include-dev-deps --format json --db-repository public.ecr.aws/aquasecurity/trivy-db:2 --output /workspace/source/scanresults.json
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.124
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.158
           name: comment-pr
           resources: {}
           script: |
