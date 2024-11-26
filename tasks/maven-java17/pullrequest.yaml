@@ -88,8 +88,11 @@ spec:
           name: vulnscan
           resources: {}
           script: |
-            # Scan all for reporting in pipeline
-            trivy fs . --scanners vuln --include-dev-deps --format json --db-repository public.ecr.aws/aquasecurity/trivy-db:2 --output /workspace/source/scanresults.json --skip-dirs --skip-dirs versionStream
+            #!/bin/bash
+            # Assign the default value '.' to PET_DIR if it is not defined
+            : "${PET_DIR:=.}"
+            # Run Trivy with the PET_DIR variable
+            trivy fs "${PET_DIR}" --scanners vuln --include-dev-deps --format json --db-repository public.ecr.aws/aquasecurity/trivy-db:2 --output /workspace/source/scanresults.json --skip-dirs versionStream
         - image: ghcr.io/jenkins-x/jx-boot:3.10.158
           name: comment-pr
           resources: {}
