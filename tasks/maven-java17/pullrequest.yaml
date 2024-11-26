@@ -88,7 +88,6 @@ spec:
           name: vulnscan
           resources: {}
           script: |
-            #!/bin/bash
             # Assign the default value '.' to PET_DIR if it is not defined
             : "${PET_DIR:=.}"
             # Run Trivy with the PET_DIR variable
