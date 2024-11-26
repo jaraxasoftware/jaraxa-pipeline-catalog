@@ -84,6 +84,32 @@ spec:
               -Dsonar.maven.scanAll=true \
               -Dsonar.coverage.jacoco.xmlReportPaths=TARGET_DIR/site/jacoco.xml \
               -Dsonar.javascript.node.maxspace=8192
+        - image: aquasec/trivy:latest
+          name: vulnscan
+          resources: {}
+          script: |
+            # Scan all for reporting in pipeline
+            trivy fs . --scanners vuln --include-dev-deps --format json --db-repository public.ecr.aws/aquasecurity/trivy-db:2 --output /workspace/source/scanresults.json
+        - image: ghcr.io/jenkins-x/jx-boot:3.10.158
+          name: comment-pr
+          resources: {}
+          script: |
+            #!/usr/bin/env sh
+            source .jx/variables.sh
+            apk add jq
+            SUMMARY=$(jq -r '.Results[]?.Vulnerabilities[]? | "ID: \(.VulnerabilityID), Severity: \(.Severity), Package: \(.PkgName). Installed: \(.InstalledVersion), Fixed: [\(.FixedVersion)]"' /workspace/source/scanresults.json)
+            if jq -e '.Results[]?.Vulnerabilities[]? | select(.Severity == "HIGH" or .Severity == "CRITICAL")' /workspace/source/scanresults.json > /dev/null; then
+              echo "Vulnerabilities of level HIGH or CRITICAL found."
+              jx gitops pr comment -c ":warning: **High or critical vulnerabilities were found** :warning: <br><br>$SUMMARY <br><br>Pipeline stopped until dependencies are upgraded."
+              exit 1
+            elif [ -n "$SUMMARY" ]; then
+              echo "No vulnerabilities of level HIGH or CRITICAL found, but other vulnerabilities exist."
+              jx gitops pr comment -c "No critical or high vulnerabilities found. <br><br>$SUMMARY <br><br>Please consider upgrading dependencies."
+              exit 0
+            else
+              echo "No vulnerabilities found."
+              exit 0
+            fi              
         - image: maven:3.8.2-openjdk-17
           name: mvn-karate-tests
           resources: {}
