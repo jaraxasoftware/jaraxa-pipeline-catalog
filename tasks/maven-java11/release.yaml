@@ -46,13 +46,13 @@ spec:
               secretKeyRef:
                 key: username
                 name: tekton-git
-          image: ghcr.io/jenkins-x/jx-release-version:2.6.10
+          image: ghcr.io/jenkins-x/jx-release-version:2.7.10
           name: next-version
           resources: {}
           script: |
             #!/usr/bin/env sh
             jx-release-version -tag -debug -previous-version=from-tag:"^v\d+\.\d+\.\d+$" > VERSION
-        - image: ghcr.io/jenkins-x/jx-release-version:2.6.10
+        - image: ghcr.io/jenkins-x/jx-release-version:2.7.10
           name: next-version-uat
           script: |
             #!/usr/bin/env sh
