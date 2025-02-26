@@ -23,7 +23,7 @@ spec:
             limits: {}
           workingDir: /workspace/source
         steps:
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.158
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.49
           name: jx-variables
           resources:
             # set requests for the pod here
@@ -42,7 +42,7 @@ spec:
           - secretRef:
               name: jx-boot-job-env-vars
               optional: true
-          image: ghcr.io/jenkins-x/jx-boot:3.10.158
+          image: ghcr.io/jenkins-x/jx-boot:3.11.49
           name: make-pr
           resources: {}
         - image: sonarsource/sonar-scanner-cli:11.0

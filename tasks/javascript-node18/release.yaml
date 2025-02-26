@@ -58,7 +58,7 @@ spec:
               script: |
                 #!/usr/bin/env sh
                 jx-release-version -debug -next-version=from-file:package.json -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT-$BUILD_ID > VERSION
-            - image: ghcr.io/jenkins-x/jx-boot:3.10.158
+            - image: ghcr.io/jenkins-x/jx-boot:3.11.49
               name: jx-variables
               resources:
                 # set requests for the pod here
@@ -144,7 +144,7 @@ spec:
                 #!/bin/ash
                 if [ -d "charts/$REPO_NAME" ]; then cd charts/$REPO_NAME
                 helm-docs; else echo no charts; fi
-            - image: ghcr.io/jenkins-x/jx-boot:3.10.158
+            - image: ghcr.io/jenkins-x/jx-boot:3.11.49
               name: promote-changelog-uat
               resources: {}
               script: |
@@ -161,7 +161,7 @@ spec:
                 git commit -a -m "chore: release $VERSION" --allow-empty
                 git tag -fa v$VERSION -m "Pre-release version $VERSION"
                 git push --force origin v$VERSION
-            - image: ghcr.io/jenkins-x/jx-boot:3.10.158
+            - image: ghcr.io/jenkins-x/jx-boot:3.11.49
               name: promote-changelog
               resources: {}
               script: |
@@ -181,7 +181,7 @@ spec:
                 git push --force origin v$VERSION
 
                 jx changelog create --version v${VERSION} --output-markdown ../changelog.md
-            - image: ghcr.io/jenkins-x/jx-boot:3.10.158
+            - image: ghcr.io/jenkins-x/jx-boot:3.11.49
               name: promote-helm-release
               resources: {}
               script: |

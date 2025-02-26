@@ -57,7 +57,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx-release-version -debug -previous-version=from-tag:"^v\d+\.\d+\.\d+$" -next-version=semantic:strip-prerelease -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT-$BUILD_ID > VERSION
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.158
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.49
           name: jx-variables
           resources:
             # set requests for the pod here
@@ -99,7 +99,7 @@ spec:
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.158
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.49
           name: promote-changelog-uat
           resources: {}
           script: |
@@ -111,7 +111,7 @@ spec:
             jx gitops yset -p 'image.repository' -v $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME -f ./charts/$REPO_NAME/values.yaml
             jx gitops yset -p 'image.tag' -v "$VERSION" -f ./charts/$REPO_NAME/values.yaml;
             else echo no charts; fi
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.158
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.49
           name: promote-changelog
           resources: {}
           script: |
@@ -138,7 +138,7 @@ spec:
             #!/bin/ash
             if [ -d "charts/$REPO_NAME" ]; then cd charts/$REPO_NAME
             helm-docs; else echo no charts; fi
-        - image: ghcr.io/jenkins-x/jx-boot:3.10.158
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.49
           name: promote-helm-release
           resources: {}
           script: |
