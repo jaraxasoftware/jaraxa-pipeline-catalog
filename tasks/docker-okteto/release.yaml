@@ -38,7 +38,7 @@ spec:
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}
-        - image: okteto/okteto:2.14.2
+        - image: okteto/okteto:2.12.0
           name: okteto-context
           resources: {}
           script: |
@@ -50,20 +50,20 @@ spec:
               secretKeyRef:
                 key: oauth
                 name: lighthouse-oauth-token        
-          image: okteto/okteto:2.14.2
+          image: okteto/okteto:2.12.0
           name: okteto-build
           resources: {}
           script: |
             #!/bin/bash
             cp .env_docker .env
             okteto build -f $OKTETO_COMPOSE -n $KOMPOSE_NAMESPACE
-        - image: okteto/okteto:2.14.2
+        - image: okteto/okteto:2.12.0
           name: okteto-deploy
           resources: {}
           script: |
             #!/bin/bash
             okteto deploy --wait -f $OKTETO_COMPOSE -n $KOMPOSE_NAMESPACE
-        - image: okteto/okteto:2.14.2
+        - image: okteto/okteto:2.12.0
           name: okteto-destroy
           resources: {}
           script: |
