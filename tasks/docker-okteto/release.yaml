@@ -44,7 +44,18 @@ spec:
           script: |
             #!/bin/bash
             okteto context -l debug use $OKTETO_URL -n $OKTETO_NAMESPACE -t $OKTETO_TOKEN
-        - image: okteto/okteto:2.14.2
+        - env:
+          - name: GIT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: tekton-git
+          - name: GIT_USER
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: tekton-git         
+          image: okteto/okteto:2.14.2
           name: okteto-build
           resources: {}
           script: |
