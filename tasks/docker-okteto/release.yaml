@@ -49,6 +49,7 @@ spec:
           resources: {}
           script: |
             #!/bin/bash
+            source .jx/variables.sh
             cp .env_docker .env
             okteto build -f $OKTETO_COMPOSE -n $KOMPOSE_NAMESPACE
         - image: okteto/okteto:2.14.2
