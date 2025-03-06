@@ -45,22 +45,16 @@ spec:
             #!/bin/bash
             okteto context -l debug use $OKTETO_URL -n $OKTETO_NAMESPACE -t $OKTETO_TOKEN
         - env:
-          - name: GIT_TOKEN
+          - name: GITHUB_TOKEN
             valueFrom:
               secretKeyRef:
-                key: password
-                name: tekton-git
-          - name: GIT_USER
-            valueFrom:
-              secretKeyRef:
-                key: username
-                name: tekton-git         
+                key: oauth
+                name: lighthouse-oauth-token        
           image: okteto/okteto:2.14.2
           name: okteto-build
           resources: {}
           script: |
             #!/bin/bash
-            source .jx/variables.sh
             cp .env_docker .env
             okteto build -f $OKTETO_COMPOSE -n $KOMPOSE_NAMESPACE
         - image: okteto/okteto:2.14.2
