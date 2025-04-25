@@ -25,7 +25,7 @@ spec:
             limits: {}
           workingDir: /workspace/source
         steps:
-        - image: ghcr.io/jenkins-x/jx-boot:3.11.49
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.78
           name: jx-variables
           resources:
             # set requests for the pod here
@@ -87,7 +87,7 @@ spec:
           script: |
             # Scan all for reporting in pipeline
             trivy fs . --scanners vuln --include-dev-deps --format json --db-repository public.ecr.aws/aquasecurity/trivy-db:2 --output /workspace/source/scanresults.json
-        - image: ghcr.io/jenkins-x/jx-boot:3.11.49
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.78
           name: comment-pr
           resources: {}
           script: |

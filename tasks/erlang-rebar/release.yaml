@@ -48,7 +48,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx-release-version -debug -previous-version=from-tag:"^v\d+\.\d+\.\d+$" -next-version=semantic:strip-prerelease -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT-$BUILD_ID > VERSION
-        - image: ghcr.io/jenkins-x/jx-boot:3.11.49
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.78
           name: jx-variables
           resources: {}
           script: |
@@ -119,7 +119,7 @@ spec:
             #!/bin/ash
             if [ -d "charts/$REPO_NAME" ]; then cd charts/$REPO_NAME
             helm-docs; else echo no charts; fi
-        - image: ghcr.io/jenkins-x/jx-boot:3.11.49
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.78
           name: promote-changelog-uat
           resources: {}
           script: |
@@ -136,7 +136,7 @@ spec:
             git commit -a -m "chore: release $VERSION" --allow-empty
             git tag -fa v$VERSION -m "Pre-release version $VERSION"
             git push --force origin v$VERSION
-        - image: ghcr.io/jenkins-x/jx-boot:3.11.49
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.78
           name: promote-changelog
           resources: {}
           script: |
@@ -177,7 +177,7 @@ spec:
               --tag v${VERSION} \
               --name "$REPO_NAME-linux-amd64" \
               --file $ARTIFACT-latest
-        - image: ghcr.io/jenkins-x/jx-boot:3.11.49
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.78
           name: promote-helm-release
           resources: {}
           script: |
