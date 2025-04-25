@@ -26,7 +26,7 @@ spec:
             name: maven-settings
           workingDir: /workspace/source
         steps:
-        - image: ghcr.io/jenkins-x/jx-boot:3.11.49
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.78
           name: jx-variables
           resources:
             # set requests for the pod here
@@ -92,7 +92,7 @@ spec:
             : "${SCAN_DIR:=.}"
             # Run Trivy with the SCAN_DIR variable
             trivy fs "${SCAN_DIR}" --scanners vuln --include-dev-deps --format json --db-repository public.ecr.aws/aquasecurity/trivy-db:2 --output /workspace/source/scanresults.json --skip-dirs versionStream
-        - image: ghcr.io/jenkins-x/jx-boot:3.11.49
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.78
           name: comment-pr
           resources: {}
           script: |
