@@ -50,7 +50,7 @@ spec:
           resources: {}
           script: |
             #!/bin/bash
-            source .jx/variables.sh            
+            source .jx/variables.sh
             sonar-scanner \
               -Dsonar.projectName=$APP_NAME \
               -Dsonar.token=$SONAR_TOKEN \
@@ -64,7 +64,7 @@ spec:
           resources: {}
           script: |
             #!/bin/bash
-            source .jx/variables.sh            
+            source .jx/variables.sh
             sonar-scanner \
               -Dsonar.projectName=$APP_NAME \
               -Dsonar.token=$SONAR_TOKEN \

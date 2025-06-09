@@ -49,7 +49,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: oauth
-                name: lighthouse-oauth-token        
+                name: lighthouse-oauth-token
           image: okteto/okteto:2.12.0
           name: okteto-build
           resources: {}

@@ -109,7 +109,7 @@ spec:
             else
               echo "No vulnerabilities found."
               exit 0
-            fi            
+            fi
         - image: ghcr.io/jenkins-x/jx-registry:0.1.10
           name: check-registry
           resources: {}

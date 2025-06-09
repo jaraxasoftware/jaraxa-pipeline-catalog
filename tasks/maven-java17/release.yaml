@@ -185,7 +185,25 @@ spec:
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
-            jx gitops helm release --version $VERSION
+
+            MAX_RETRIES=3
+            DELAY=15
+            ATTEMPT=0
+
+            # Loop that runs UNTIL the command succeeds
+            until jx gitops helm release --version $VERSION; do
+              ATTEMPT=$((ATTEMPT + 1))
+              if [ $ATTEMPT -ge $MAX_RETRIES ]; then
+                # Explicitly fail the script so the pipeline fails
+                echo "Error: Command failed after $MAX_RETRIES attempts." >&2
+                exit 1
+              fi
+
+              echo "Attempt $ATTEMPT/$MAX_RETRIES failed. Retrying in ${DELAY}s..." >&2
+              sleep $DELAY
+            done
+
+            echo "Helm release has been published successfully."
         - image: ghcr.io/jenkins-x-plugins/jx-promote:0.6.5
           name: promote-jx-promote
           resources: {}
