@@ -16,13 +16,13 @@ spec:
     resources: {}
     workingDir: /workspace/source
   steps:
-  - image: ghcr.io/jenkins-x/jx-boot:3.11.78
+  - image: ghcr.io/jenkins-x/jx-boot:3.11.107
     name: jx-variables
     resources: {}
     script: |
       #!/usr/bin/env sh
       jx gitops variables
-  - image: ghcr.io/jenkins-x/jx-boot:3.11.78
+  - image: ghcr.io/jenkins-x/jx-boot:3.11.107
     name: git-history
     resources: {}
     script: |
@@ -35,7 +35,7 @@ spec:
         secretKeyRef:
           key: oauth
           name: lighthouse-oauth-token
-    image: ghcr.io/jenkins-x/jx-boot:3.11.78
+    image: ghcr.io/jenkins-x/jx-boot:3.11.107
     name: collect-issues
     resources: {}
     script: |
@@ -46,7 +46,7 @@ spec:
       gh release view v$VERSION | \
         grep -oE "$JIRA_PROJECT-[[:digit:]]{1,}" | sort | uniq | \
         paste -sd , - | awk '{print "\"" $0 "\""}' > JIRA_ISSUES
-  - image: ghcr.io/jenkins-x/jx-boot:3.11.78
+  - image: ghcr.io/jenkins-x/jx-boot:3.11.107
     name: invoke-jira-webhook
     resources: {}
     script: |

@@ -44,7 +44,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx-release-version -tag -debug -previous-version=from-tag:"^v\d+\.\d+\.\d+$" > VERSION
-        - image: ghcr.io/jenkins-x/jx-boot:3.11.78
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.107
           name: jx-variables
           resources: {}
           script: |
@@ -70,7 +70,7 @@ spec:
               --context=/workspace/source \
               --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
               --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
-        - image: ghcr.io/jenkins-x/jx-boot:3.11.78
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.107
           name: promote-changelog-uat
           resources: {}
           script: |
@@ -90,7 +90,7 @@ spec:
             git push --force origin v$VERSION
 
             jx changelog create --draft --version v${VERSION}
-        - image: ghcr.io/jenkins-x/jx-boot:3.11.78
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.107
           name: promote-changelog
           resources: {}
           script: |
@@ -110,14 +110,14 @@ spec:
             git push --force origin v$VERSION
 
             jx changelog create --version v${VERSION} --output-markdown ../changelog.md
-        - image: ghcr.io/jenkins-x/jx-boot:3.11.78
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.107
           name: promote-step6
           resources: {}
           script: |
             #!/usr/bin/env sh
             source .jx/variables.sh
             jx gitops helm release --version $VERSION
-        - image: ghcr.io/jenkins-x/jx-boot:3.11.78
+        - image: ghcr.io/jenkins-x/jx-boot:3.11.107
           name: promote-step7
           resources: {}
           script: |
