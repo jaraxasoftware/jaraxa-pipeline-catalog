@@ -43,8 +43,6 @@ spec:
               script: |
                 #!/usr/bin/env sh
                 jx-release-version -tag -debug -previous-version=from-tag:"^v\d+\.\d+\.\d+$" > VERSION
-
-                sleep 6000
             - image: ghcr.io/jenkins-x/jx-release-version:2.7.9
               name: next-version-uat
               script: |
