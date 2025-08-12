@@ -71,13 +71,13 @@ spec:
           script: |
             #!/bin/sh
             gradle clean build $BUILD_OPTS
-        - image: ghcr.io/jaraxasoftware/pet-component-android:builder-20231031
+        - image: ghcr.io/jaraxasoftware/pet-component-android:builder-20250812
           name: android-gradle-build
           resources: {}
           script: |
             #!/bin/sh
             gradle clean build $BUILD_OPTS
-        - image: ghcr.io/jaraxasoftware/pet-component-android:builder-20231031
+        - image: ghcr.io/jaraxasoftware/pet-component-android:builder-20250812
           name: android-gradle-publish
           resources: {}
           script: |
