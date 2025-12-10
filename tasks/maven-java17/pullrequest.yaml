@@ -91,7 +91,7 @@ spec:
             # Assign the default value '.' to SCAN_DIR if it is not defined
             : "${SCAN_DIR:=.}"
             # Run Trivy with the SCAN_DIR variable
-            trivy fs "${SCAN_DIR}" --scanners vuln --include-dev-deps --format json --db-repository public.ecr.aws/aquasecurity/trivy-db:2 --output /workspace/source/scanresults.json --skip-dirs versionStream
+            trivy fs "${SCAN_DIR}" --scanners vuln --include-dev-deps --format json --db-repository public.ecr.aws/aquasecurity/trivy-db:2 --output /workspace/source/scanresults.json --skip-dirs versionStream --timeout 30m
         - image: ghcr.io/jenkins-x/jx-boot:3.11.107
           name: comment-pr
           resources: {}
