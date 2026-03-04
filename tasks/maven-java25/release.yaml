@@ -1,0 +1,233 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  creationTimestamp: null
+  name: release
+spec:
+  pipelineSpec:
+    tasks:
+      - name: from-build-pack
+        resources: {}
+        taskSpec:
+          metadata: {}
+          stepTemplate:
+            env:
+              - name: MAVEN_OPTS
+                value:
+                  -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=25
+                  -Dmaven.wagon.http.retryHandler.count=3
+              - name: HOME
+                value: /tekton/home
+            envFrom:
+              - secretRef:
+                  name: jx-boot-job-env-vars
+                  optional: true
+            name: ""
+            resources:
+              limits: {}
+            volumeMounts:
+              - mountPath: /root/.m2/
+                name: maven-settings
+              - mountPath: /root/.gnupg
+                name: release-gpg
+            workingDir: /workspace/source
+          steps:
+            - env:
+                - name: GIT_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      key: password
+                      name: tekton-git
+                - name: GIT_USER
+                  valueFrom:
+                    secretKeyRef:
+                      key: username
+                      name: tekton-git
+              image: ghcr.io/jenkins-x/jx-release-version:2.7.9
+              name: next-version
+              resources: {}
+              script: |
+                #!/usr/bin/env sh
+                jx-release-version -debug -previous-version=from-tag:"^v\d+\.\d+\.\d+$" > VERSION
+            - image: ghcr.io/jenkins-x/jx-release-version:2.7.9
+              name: next-version-uat
+              script: |
+                #!/usr/bin/env sh
+                jx-release-version -debug -next-version=semantic:strip-prerelease -output-format "{{.Major}}.{{.Minor}}.{{.Patch}}"-UAT > VERSION
+            - image: ghcr.io/jenkins-x/jx-boot:3.11.107
+              name: jx-variables
+              resources:
+                # set requests for the pod here
+                requests:
+                  cpu: 400m
+                  memory: 512Mi
+              script: |
+                #!/usr/bin/env sh
+                jx gitops variables
+            - image: maven:3.9.9-eclipse-temurin-25
+              name: build-mvn-deploy-snapshot
+              resources: {}
+              script: |
+                #!/usr/bin/env bash
+                source .jx/variables.sh
+
+                # modify the pom.xml
+                echo "upgrading the pom to snapshot version $VERSION-SNAPSHOT"
+                mvn versions:set -DnewVersion=$VERSION-SNAPSHOT
+
+                mvn --no-transfer-progress clean deploy
+            - image: maven:3.9.9-eclipse-temurin-25
+              name: build-mvn-deploy
+              resources: {}
+              script: |
+                #!/usr/bin/env bash
+                source .jx/variables.sh
+
+                # modify the pom.xml
+                echo "upgrading the pom to version $VERSION"
+                mvn versions:set -DnewVersion=$VERSION
+
+                mvn --no-transfer-progress clean deploy
+            - image: maven:3.9.9-eclipse-temurin-25
+              name: build-mvn-install
+              resources: {}
+              script: |
+                #!/usr/bin/env bash
+                source .jx/variables.sh
+
+                # modify the pom.xml
+                echo "upgrading the pom to version $VERSION"
+                mvn versions:set -DnewVersion=$VERSION
+
+                mvn --no-transfer-progress install
+            - image: maven:3.9.9-eclipse-temurin-25
+              name: maven-sonar-code-analisys
+              resources: {}
+              script: |
+                #!/bin/bash
+                source .jx/variables.sh
+                mvn --no-transfer-progress sonar:sonar \
+                  -Dsonar.projectName=$APP_NAME \
+                  -Dsonar.token=$SONAR_TOKEN \
+                  -Dsonar.host.url=$SONAR_URL \
+                  -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+                  -Dsonar.branch.name=$PULL_BASE_REF \
+                  -Dsonar.projectVersion=$VERSION \
+                  -Dsonar.exclusions=$SONAR_EXCLUSIONS \
+                  -Dsonar.maven.scanAll=true \
+                  -Dsonar.javascript.node.maxspace=8192
+            - image: ghcr.io/jenkins-x/jx-registry:0.1.10
+              name: check-registry
+              resources: {}
+            - image: gcr.io/kaniko-project/executor:v1.23.0-debug
+              name: build-container-build
+              resources: {}
+              script: |
+                #!/busybox/sh
+                source .jx/variables.sh
+                cp /tekton/creds-secrets/tekton-container-registry-auth/.dockerconfigjson /kaniko/.docker/config.json
+                /kaniko/executor $KANIKO_FLAGS \
+                  --skip-unused-stages \
+                  --cache=true \
+                  --cache-repo=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME \
+                  --cache-copy-layers \
+                  --cleanup \
+                  --context=/workspace/source \
+                  --dockerfile=${DOCKERFILE_PATH:-Dockerfile} \
+                  --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION \
+                  --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest
+            - image: ghcr.io/jenkins-x/jx-boot:3.11.107
+              name: promote-changelog-uat
+              resources: {}
+              script: |
+                #!/usr/bin/env sh
+                source .jx/variables.sh
+                if [ -d "charts/$REPO_NAME" ]; then
+                jx gitops yset -p version -v "$VERSION" -f ./charts/$REPO_NAME/Chart.yaml
+                jx gitops yset -p appVersion -v "$VERSION" -f ./charts/$REPO_NAME/Chart.yaml
+                jx gitops yset -p 'image.repository' -v $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME -f ./charts/$REPO_NAME/values.yaml
+                jx gitops yset -p 'image.tag' -v "$VERSION" -f ./charts/$REPO_NAME/values.yaml;
+                else echo no charts; fi
+
+                git add * || true
+                git commit -a -m "chore: release $VERSION" --allow-empty
+                git tag -fa v$VERSION -m "Pre-release version $VERSION"
+                git push --force origin v$VERSION
+            - image: ghcr.io/jenkins-x/jx-boot:3.11.107
+              name: promote-changelog
+              resources: {}
+              script: |
+                #!/usr/bin/env sh
+                source .jx/variables.sh
+
+                if [ -d "charts/$REPO_NAME" ]; then
+                jx gitops yset -p version -v "$VERSION" -f ./charts/$REPO_NAME/Chart.yaml
+                jx gitops yset -p appVersion -v "$VERSION" -f ./charts/$REPO_NAME/Chart.yaml
+                jx gitops yset -p 'image.repository' -v $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME -f ./charts/$REPO_NAME/values.yaml
+                jx gitops yset -p 'image.tag' -v "$VERSION" -f ./charts/$REPO_NAME/values.yaml;
+                else echo no charts; fi
+
+                jx changelog create --version v${VERSION} --output-markdown ../changelog.md
+
+                git add * || true
+                git commit -a -m "chore: release $VERSION" --allow-empty
+                git tag -fa v$VERSION -m "Release version $VERSION"
+                git push --force origin v$VERSION
+            - image: jnorwood/helm-docs:v1.4.0
+              name: chart-docs
+              resources: {}
+              script: |
+                #!/bin/ash
+                if [ -d "charts/$REPO_NAME" ]; then cd charts/$REPO_NAME
+                helm-docs; else echo no charts; fi
+            - image: ghcr.io/jenkins-x/jx-boot:3.11.107
+              name: promote-helm-release
+              resources: {}
+              script: |
+                #!/usr/bin/env sh
+                source .jx/variables.sh
+
+                MAX_RETRIES=3
+                DELAY=15
+                ATTEMPT=0
+
+                # Loop that runs UNTIL the command succeeds
+                until jx gitops helm release --version $VERSION; do
+                  ATTEMPT=$((ATTEMPT + 1))
+                  if [ $ATTEMPT -ge $MAX_RETRIES ]; then
+                    # Explicitly fail the script so the pipeline fails
+                    echo "Error: Command failed after $MAX_RETRIES attempts." >&2
+                    exit 1
+                  fi
+
+                  echo "Attempt $ATTEMPT/$MAX_RETRIES failed. Retrying in ${DELAY}s..." >&2
+                  sleep $DELAY
+                done
+
+                echo "Helm release has been published successfully."
+            - image: ghcr.io/jenkins-x-plugins/jx-promote:0.6.5
+              name: promote-jx-promote
+              resources: {}
+              script: |
+                #!/usr/bin/env sh
+                source .jx/variables.sh
+                jx promote -b --env $ENVIRONMENT --timeout 1h --no-poll --version $VERSION
+            - name: promote-jx-updatebot-sync
+              image: ghcr.io/jenkins-x/jx-updatebot:0.4.1
+              resources: {}
+              script: |
+                #!/usr/bin/env sh
+                source .jx/variables.sh
+                jx updatebot sync --source-env $ENVIRONMENT --target-env $PREVIEW_ENV --charts $APP_NAME
+          volumes:
+            - name: maven-settings
+              secret:
+                secretName: jenkins-maven-settings
+            - name: release-gpg
+              secret:
+                optional: true
+                secretName: jenkins-release-gpg
+  podTemplate: {}
+  serviceAccountName: tekton-bot
+  timeout: 12h0m0s
+status: {}

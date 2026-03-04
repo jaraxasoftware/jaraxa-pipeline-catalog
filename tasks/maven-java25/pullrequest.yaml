@@ -1,0 +1,186 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  creationTimestamp: null
+  name: pullrequest
+spec:
+  pipelineSpec:
+    tasks:
+      - name: from-build-pack
+        resources: {}
+        taskSpec:
+          metadata: {}
+          stepTemplate:
+            env:
+              - name: HOME
+                value: /tekton/home
+            envFrom:
+              - secretRef:
+                  name: jx-boot-job-env-vars
+                  optional: true
+            name: ""
+            resources:
+              limits: {}
+            volumeMounts:
+              - mountPath: /root/.m2/
+                name: maven-settings
+            workingDir: /workspace/source
+          steps:
+            - image: ghcr.io/jenkins-x/jx-boot:3.11.107
+              name: jx-variables
+              resources:
+                # set requests for the pod here
+                requests:
+                  cpu: 400m
+                  memory: 512Mi
+              script: |
+                #!/usr/bin/env sh
+                jx gitops variables
+                jx gitops pr variables
+            - image: maven:3.9.9-eclipse-temurin-25
+              name: build-set-version
+              resources: {}
+              script: |
+                #!/usr/bin/env bash
+                echo "not changing version for SNAPSHOT"
+            - image: maven:3.9.9-eclipse-temurin-25
+              name: build-mvn-install
+              resources: {}
+              script: |
+                #!/usr/bin/env bash
+                source .jx/variables.sh
+                mvn --no-transfer-progress install -Pcoverage
+            - image: maven:3.9.9-eclipse-temurin-25
+              name: maven-sonar-code-analisys
+              resources: {}
+              script: |
+                #!/bin/bash
+                source .jx/variables.sh
+                cd pet/
+                mvn --no-transfer-progress sonar:sonar \
+                  -Dsonar.projectName=$APP_NAME \
+                  -Dsonar.token=$SONAR_TOKEN \
+                  -Dsonar.host.url=$SONAR_URL \
+                  -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+                  -Dsonar.branch.name=$PULL_BASE_REF \
+                  -Dsonar.exclusions=$SONAR_EXCLUSIONS \
+                  -Dsonar.maven.scanAll=true \
+                  -Dsonar.javascript.node.maxspace=8192
+            - image: maven:3.9.9-eclipse-temurin-25
+              name: maven-sonar-code-analisys-pr
+              resources: {}
+              script: |
+                #!/bin/bash
+                source .jx/variables.sh
+                cd pet/
+                mvn --no-transfer-progress sonar:sonar \
+                  -Dsonar.projectName=$APP_NAME \
+                  -Dsonar.token=$SONAR_TOKEN \
+                  -Dsonar.host.url=$SONAR_URL \
+                  -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+                  -Dsonar.exclusions=$SONAR_EXCLUSIONS \
+                  -Dsonar.pullrequest.key=$PULL_NUMBER \
+                  -Dsonar.pullrequest.branch=$PR_HEAD_REF \
+                  -Dsonar.pullrequest.base=$PULL_BASE_REF \
+                  -Dsonar.scm.revision=$PR_HEAD_SHA \
+                  -Dsonar.maven.scanAll=true \
+                  -Dsonar.coverage.jacoco.xmlReportPaths=TARGET_DIR/site/jacoco.xml \
+                  -Dsonar.javascript.node.maxspace=8192
+            - image: aquasec/trivy:latest
+              name: vulnscan
+              resources: {}
+              script: |
+                # Assign the default value '.' to SCAN_DIR if it is not defined
+                : "${SCAN_DIR:=.}"
+                # Run Trivy with the SCAN_DIR variable
+                trivy fs "${SCAN_DIR}" --scanners vuln --include-dev-deps --format json --db-repository public.ecr.aws/aquasecurity/trivy-db:2 --output /workspace/source/scanresults.json --skip-dirs versionStream --timeout 30m
+            - image: ghcr.io/jenkins-x/jx-boot:3.11.107
+              name: comment-pr
+              resources: {}
+              script: |
+                #!/usr/bin/env sh
+                source .jx/variables.sh
+                apk add jq
+                SUMMARY=$(jq -r '.Results[]?.Vulnerabilities[]? | "ID: \(.VulnerabilityID), Severity: \(.Severity), Package: \(.PkgName). Installed: \(.InstalledVersion), Fixed: [\(.FixedVersion)]"' /workspace/source/scanresults.json)
+                if jq -e '.Results[]?.Vulnerabilities[]? | select(.Severity == "HIGH" or .Severity == "CRITICAL")' /workspace/source/scanresults.json > /dev/null; then
+                  echo "Vulnerabilities of level HIGH or CRITICAL found."
+                  jx gitops pr comment -c ":warning: **High or critical vulnerabilities were found** :warning: <br><br>$SUMMARY <br><br>Pipeline stopped until dependencies are upgraded."
+                  exit 0
+                elif [ -n "$SUMMARY" ]; then
+                  echo "No vulnerabilities of level HIGH or CRITICAL found, but other vulnerabilities exist."
+                  jx gitops pr comment -c "No critical or high vulnerabilities found. <br><br>$SUMMARY <br><br>Please consider upgrading dependencies."
+                  exit 0
+                else
+                  echo "No vulnerabilities found."
+                  exit 0
+                fi
+            - image: maven:3.9.9-eclipse-temurin-25
+              name: mvn-karate-tests
+              resources: {}
+              onError: continue
+              script: |
+                #!/bin/bash
+                source .jx/variables.sh
+                echo "Starting Karate Testing"
+                mvn test compile -q
+                mvn test -Dspring.profiles.active=$KARATE_PROFILE -Dkarate.env=$KARATE_ENV -Dtest=$KARATE_SUITE "-Dkarate.options=--tags ~@init" -Dsurefire.failIfNoSpecifiedTests=false
+            - image: maven:3.9.9-eclipse-temurin-25
+              name: test-results-report-git
+              resources: {}
+              script: |
+                #!/bin/bash
+                source .jx/variables.sh
+                export DATE=$(date "+%Y%m%d")
+
+                cp -r $CLOUD_CI_PATH/target/cucumber-html-reports/ $CLOUD_CI_PATH/docs/${DATE}_${VERSION}
+                cd $CLOUD_CI_PATH
+                git add docs/
+                git commit -am "Update karate tests master"
+                git checkout gh-pages
+                git checkout master docs
+                git add docs/
+                git commit -am "Update karate tests gh-pages"
+                git push
+            - image: node:18-slim
+              name: test-results-report
+              resources: {}
+              script: |
+                #!/bin/bash
+                source .jx/variables.sh
+                export DATE=$(date "+%Y%m%d")
+
+                npm i testbeats
+                npx testbeats publish -c config.json
+            - image: ghcr.io/jenkins-x/jx-registry:0.1.10
+              name: check-registry
+              resources: {}
+            - image: gcr.io/kaniko-project/executor:v1.23.0-debug
+              name: build-container-build
+              resources: {}
+              script: |
+                #!/busybox/sh
+                source .jx/variables.sh
+                cp /tekton/creds-secrets/tekton-container-registry-auth/.dockerconfigjson /kaniko/.docker/config.json
+                /kaniko/executor $KANIKO_FLAGS --context=/workspace/source --dockerfile=${DOCKERFILE_PATH:-Dockerfile} --destination=$PUSH_CONTAINER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
+            - image: quay.io/helmpack/chart-testing:v3.7.1
+              name: helm-chart-testing
+              resources: {}
+              script: |
+                #!/bin/bash
+                source .jx/variables.sh
+                ct lint --charts charts/$REPO_NAME --validate-maintainers=false
+            - image: ghcr.io/jenkins-x-plugins/jx-preview:0.4.7
+              name: promote-jx-preview
+              resources: {}
+              script: |
+                #!/usr/bin/env sh
+                source .jx/variables.sh
+                jx preview create
+          volumes:
+            - name: maven-settings
+              secret:
+                secretName: jenkins-maven-settings
+  podTemplate: {}
+  serviceAccountName: tekton-bot
+  timeout: 12h0m0s
+status: {}
