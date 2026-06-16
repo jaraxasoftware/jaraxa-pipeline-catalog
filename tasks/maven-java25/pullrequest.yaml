@@ -37,20 +37,20 @@ spec:
                 #!/usr/bin/env sh
                 jx gitops variables
                 jx gitops pr variables
-            - image: maven:3.9.9-eclipse-temurin-25
+            - image: maven:3.9-eclipse-temurin-25
               name: build-set-version
               resources: {}
               script: |
                 #!/usr/bin/env bash
                 echo "not changing version for SNAPSHOT"
-            - image: maven:3.9.9-eclipse-temurin-25
+            - image: maven:3.9-eclipse-temurin-25
               name: build-mvn-install
               resources: {}
               script: |
                 #!/usr/bin/env bash
                 source .jx/variables.sh
                 mvn --no-transfer-progress install -Pcoverage
-            - image: maven:3.9.9-eclipse-temurin-25
+            - image: maven:3.9-eclipse-temurin-25
               name: maven-sonar-code-analisys
               resources: {}
               script: |
@@ -66,7 +66,7 @@ spec:
                   -Dsonar.exclusions=$SONAR_EXCLUSIONS \
                   -Dsonar.maven.scanAll=true \
                   -Dsonar.javascript.node.maxspace=8192
-            - image: maven:3.9.9-eclipse-temurin-25
+            - image: maven:3.9-eclipse-temurin-25
               name: maven-sonar-code-analisys-pr
               resources: {}
               script: |
@@ -114,7 +114,7 @@ spec:
                   echo "No vulnerabilities found."
                   exit 0
                 fi
-            - image: maven:3.9.9-eclipse-temurin-25
+            - image: maven:3.9-eclipse-temurin-25
               name: mvn-karate-tests
               resources: {}
               onError: continue
@@ -124,7 +124,7 @@ spec:
                 echo "Starting Karate Testing"
                 mvn test compile -q
                 mvn test -Dspring.profiles.active=$KARATE_PROFILE -Dkarate.env=$KARATE_ENV -Dtest=$KARATE_SUITE "-Dkarate.options=--tags ~@init" -Dsurefire.failIfNoSpecifiedTests=false
-            - image: maven:3.9.9-eclipse-temurin-25
+            - image: maven:3.9-eclipse-temurin-25
               name: test-results-report-git
               resources: {}
               script: |
