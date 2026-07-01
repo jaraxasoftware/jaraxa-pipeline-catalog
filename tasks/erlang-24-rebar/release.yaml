@@ -54,7 +54,7 @@ spec:
           script: |
             #!/usr/bin/env sh
             jx gitops variables
-        - image: erlang:24.3.4.17-slim
+        - image: erlang:24.3.4.17
           name: build-erlang-develop
           resources: {}
           script: |
@@ -67,7 +67,7 @@ spec:
               ln -s "$ERL_INTERFACE_DIR/lib/libei.a" "$ERL_INTERFACE_DIR/lib/liberl_interface.a"
             fi
             rebar3 release --relname $APP_NAME --output-dir ./
-        - image: erlang:24.3.4.17-slim
+        - image: erlang:24.3.4.17
           name: build-erlang-release
           resources: {}
           script: |
@@ -80,7 +80,7 @@ spec:
               ln -s "$ERL_INTERFACE_DIR/lib/libei.a" "$ERL_INTERFACE_DIR/lib/liberl_interface.a"
             fi
             rebar3 as $REBAR_RELEASE release --output-dir ./
-        - image: erlang:24.3.4.17-slim
+        - image: erlang:24.3.4.17
           name: eunit-tests
           resources: {}
           script: |
