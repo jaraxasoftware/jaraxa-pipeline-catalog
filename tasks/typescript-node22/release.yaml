@@ -144,6 +144,8 @@ spec:
             jx gitops yset -p 'image.tag' -v "$VERSION" -f ./charts/$REPO_NAME/values.yaml;
             else echo no charts; fi
 
+            git config --global user.email "jenkins-x@jaraxasoftware.com"
+            git config --global user.name "jenkins-x"
             git add * || true
             git commit -a -m "chore: release $VERSION" --allow-empty
             git tag -fa v$VERSION -m "Pre-release version $VERSION"
@@ -162,6 +164,8 @@ spec:
             jx gitops yset -p 'image.tag' -v "$VERSION" -f ./charts/$REPO_NAME/values.yaml;
             else echo no charts; fi
 
+            git config --global user.email "jenkins-x@jaraxasoftware.com"
+            git config --global user.name "jenkins-x"
             git add * || true
             git commit -a -m "chore: release $VERSION" --allow-empty
             git tag -fa v$VERSION -m "Release version $VERSION"
